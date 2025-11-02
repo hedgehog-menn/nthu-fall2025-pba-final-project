@@ -4,7 +4,7 @@ author:
   - "(Ken) Kanokphan Thananchai - 112065431"
   - "(Fern) Wachiraporn Tianchot -	112550081"
 format:
-  markdown_github:
+  gfm:
     toc: true
 editor: visual
 ---
