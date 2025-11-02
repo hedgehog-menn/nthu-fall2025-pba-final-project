@@ -1,0 +1,77 @@
+# Programming for Business Analytics (PBA) – Final Project
+(Ken) Kanokphan Thananchai - 112065431, (Fern) Wachiraporn Tianchot -
+112550081
+
+-   [**Part 1: Data and Proposal**](#part-1-data-and-proposal)
+    -   [**Data resource**](#data-resource)
+    -   [**Proposal**](#proposal)
+    -   [**Purpose**](#purpose)
+    -   [**Variables**](#variables)
+    -   [**Questions**](#questions)
+
+## **Part 1: Data and Proposal**
+
+### **Data resource**
+
+-   [Spotify Analysis Dataset
+    2025](https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis)
+
+### **Proposal**
+
+We will analyze Spotify dataset with user-level behavior (listening
+time, skips), plan type (Free/Premium), ads exposure, devices,
+demographics, and a churn flag. This lets us explore engagement patterns
+and illustrate churn/upgrade dynamics in a transparent, visual way.
+
+### **Purpose**
+
+Explain who is active, who is likely to churn, and who is likely to
+upgrade to Premium then translate those insights into simple, testable
+actions (upsell targeting, ad-light trials, playlist nudges) to improve
+retention and conversion.
+
+### **Variables**
+
+-   user_ID → Unique identifier for each user
+
+-   gender → Male/Female/Other
+
+-   age → User age
+
+-   country → User Location
+
+-   subscription_type → Free, Premium, Family, Student
+
+-   listening_time → Minutes spent listening per day
+
+-   songs_played_per_day → Number of songs played daily
+
+-   skip_rate → Percentage of songs skipped
+
+-   device_type → Device used (Mobile, Desktop, Web)
+
+-   ads_listened_per_week → Number of ads heard per week
+
+-   offline_listening → Offline mode usage
+
+-   is_churned → Target variable (0 = Active, 1 = Churned)
+
+### **Questions**
+
+1.  Which countries have the most active Spotify users?
+
+2.  Which countries have the most premium or free Spotify users?
+
+3.  How do listening time and songs played per day vary across age
+    groups and gender?
+
+4.  Which factors (listening_time, skip_rate, ads exposure, device, age)
+    best predict churn probability?
+
+5.  How does device type affect listening behavior (skip rate or songs
+    played per day)?
+
+6.  How do ads listening weekly relate to listening time and skip rate?
+
+7.  Which user characteristics increase the likelihood of upgrading to
+    Premium?
