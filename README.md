@@ -1,5 +1,5 @@
 # Programming for Business Analytics (PBA) – Final Project
-(Ken) Kanokphan Thananchai - 112065431, (Fern) Wachiraporn Tianchot -
+(Ken) Kanokphan Thananchai - 112065431(Fern) Wachiraporn Tianchot -
 112550081
 
 - [**Part 1: Data and Proposal**](#part-1-data-and-proposal)
@@ -9,13 +9,13 @@
   - [**Variables**](#variables)
   - [**Questions**](#questions)
 - [**Part 2: Data Visualization**](#part-2-data-visualization)
-  - [Set Up the envionment](#set-up-the-envionment)
-  - [Visualization No.1](#visualization-no1)
-  - [Visualization No.2](#visualization-no2)
-  - [Visualization No.3](#visualization-no3)
-  - [Visualization No.4](#visualization-no4)
-  - [Visualization No.5](#visualization-no5)
-  - [Visualization No.6](#visualization-no6)
+  - [Set Up the Envionment](#set-up-the-envionment)
+  - [Visualization No.1](#visualization-no.1)
+  - [Visualization No.2](#visualization-no.2)
+  - [Visualization No.3](#visualization-no.3)
+  - [Visualization No.4](#visualization-no.4)
+  - [Visualization No.5](#visualization-no.5)
+  - [Visualization No.6](#visualization-no.6)
 
 ## **Part 1: Data and Proposal**
 
@@ -86,7 +86,7 @@ retention and conversion.
 
 ## **Part 2: Data Visualization**
 
-### Set Up the envionment
+### Set Up the Envionment
 
 - Load the libraries
 
@@ -110,10 +110,17 @@ library(dplyr)
 library(sf)
 ```
 
+    Warning: package 'sf' was built under R version 4.3.3
+
     Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
 
 ``` r
 library(rnaturalearth)
+```
+
+    Warning: package 'rnaturalearth' was built under R version 4.3.3
+
+``` r
 library(stringr)
 library(scales)
 ```

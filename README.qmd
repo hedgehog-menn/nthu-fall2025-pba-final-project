@@ -67,7 +67,7 @@ Explain who is active, who is likely to churn, and who is likely to upgrade to P
 
 ## **Part 2: Data Visualization**
 
-### Set Up the envionment
+### Set Up the Envionment
 
 -   Load the libraries
 
