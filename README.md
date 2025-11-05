@@ -159,7 +159,7 @@ data <- read.csv("spotify_churn_dataset.csv")
 
 ### Visualization No.1
 
-Count the number of users per country
+**Table 1:** Active Spotify users by country
 
 ``` r
 data_fixed <- data %>%
@@ -209,9 +209,9 @@ ggplot(data = world_map_with_data) +
 
 ![](README_files/figure-commonmark/unnamed-chunk-6-1.png)
 
-**Table 1:** Active Spotify users by country
-
 ### Visualization No.2
+
+**Figure 2:** User by Country and Subscription Type
 
 ``` r
 # 1. Clean the subscription_type column
@@ -293,6 +293,8 @@ ggplot(
 
 ### Visualization No.3
 
+**Figure 3:** Listening Time Across Age Groups
+
 ``` r
 # 1. Create the age groups (Your code)
 data_with_age_groups <- data %>%
@@ -342,6 +344,8 @@ ggplot(data_with_age_groups,
 
 ### Visualization No.4
 
+**Figure 4:** Skip Rate Distribution by Subscription Type
+
 ``` r
 # ---
 # Plot: Free and Premium differ in `skip_rate`
@@ -376,6 +380,8 @@ ggplot(data,
 
 ### Visualization No.5
 
+**Figure 5:** Listening Time by Device Type
+
 ``` r
 # ---
 # Plot: `device_type` differ in `listening_time`
@@ -409,6 +415,8 @@ ggplot(data,
 ![](README_files/figure-commonmark/unnamed-chunk-10-1.png)
 
 ### Visualization No.6
+
+**Figure 6:** Songs Played Per day by Device Type
 
 ``` r
 # ---
