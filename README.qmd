@@ -13,7 +13,7 @@ editor: visual
 
 ### **Data resource**
 
--   [Spotify Analysis Dataset 2025](https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis)
+-   [\[Kaggle\] Spotify Analysis Dataset 2025](https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis)
 
 ### **Proposal**
 
@@ -67,7 +67,9 @@ Explain who is active, who is likely to churn, and who is likely to upgrade to P
 
 ## **Part 2: Data Visualization**
 
-Load the libraries
+### Set Up the envionment
+
+-   Load the libraries
 
 ```{r}
 library(ggplot2)
@@ -78,11 +80,39 @@ library(stringr)
 library(scales)
 ```
 
-Load data
+-   Load data
 
 ```{r}
 data <- read.csv("spotify_churn_dataset.csv")
 ```
+
+-   Useful function
+
+    -   This function will create a label for the MEDIAN - for Boxplot
+
+        ```{r}
+        fun_median_label <- function(y) {
+          return(data.frame(y = median(y), 
+                            label = round(median(y), 1)))
+        }
+
+        # This function will create a label for the COUNT (n)
+        fun_n_label <- function(y) {
+          return(data.frame(y = median(y), 
+                            label = paste0("n = ", length(y))))
+        }
+        ```
+
+    -   This function will create a label for the COUNT (n) - for Boxplot
+
+        ```{r}
+        fun_n_label <- function(y) {
+          return(data.frame(y = median(y), 
+                            label = paste0("n = ", length(y))))
+        }
+        ```
+
+### Visualization No.1
 
 Count the number of users per country
 
@@ -123,6 +153,8 @@ ggplot(data = world_map_with_data) +
 ```
 
 **Table 1:** Active Spotify users by country
+
+### Visualization No.2
 
 ```{r}
 # 1. Clean the subscription_type column
@@ -200,6 +232,8 @@ ggplot(
   ylim(0, max(country_totals$total_users) * 1.05)
 ```
 
+### Visualization No.3
+
 ```{r}
 # 1. Create the age groups (Your code)
 data_with_age_groups <- data %>%
@@ -260,6 +294,8 @@ ggplot(data_with_age_groups,
   theme_minimal()
 ```
 
+### Visualization No.4
+
 ```{r}
 # ---
 # Plot: Free and Premium differ in `skip_rate`
@@ -290,6 +326,8 @@ ggplot(data,
   theme_minimal()
 ```
 
+### Visualization No.5
+
 ```{r}
 # ---
 # Plot: `device_type` differ in `listening_time`
@@ -319,6 +357,8 @@ ggplot(data,
   ) +
   theme_minimal()
 ```
+
+### Visualization No.6
 
 ```{r}
 
