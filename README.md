@@ -9,12 +9,19 @@
   - [**Variables**](#variables)
   - [**Questions**](#questions)
 - [**Part 2: Data Visualization**](#part-2-data-visualization)
+  - [Set Up the envionment](#set-up-the-envionment)
+  - [Visualization No.1](#visualization-no1)
+  - [Visualization No.2](#visualization-no2)
+  - [Visualization No.3](#visualization-no3)
+  - [Visualization No.4](#visualization-no4)
+  - [Visualization No.5](#visualization-no5)
+  - [Visualization No.6](#visualization-no6)
 
 ## **Part 1: Data and Proposal**
 
 ### **Data resource**
 
-- [Spotify Analysis Dataset
+- [\[Kaggle\] Spotify Analysis Dataset
   2025](https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis)
 
 ### **Proposal**
@@ -79,7 +86,9 @@ retention and conversion.
 
 ## **Part 2: Data Visualization**
 
-Load the libraries
+### Set Up the envionment
+
+- Load the libraries
 
 ``` r
 library(ggplot2)
@@ -109,11 +118,39 @@ library(stringr)
 library(scales)
 ```
 
-Load data
+- Load data
 
 ``` r
 data <- read.csv("spotify_churn_dataset.csv")
 ```
+
+- Useful function
+
+  - This function will create a label for the MEDIAN - for Boxplot
+
+    ``` r
+    fun_median_label <- function(y) {
+      return(data.frame(y = median(y), 
+                        label = round(median(y), 1)))
+    }
+
+    # This function will create a label for the COUNT (n)
+    fun_n_label <- function(y) {
+      return(data.frame(y = median(y), 
+                        label = paste0("n = ", length(y))))
+    }
+    ```
+
+  - This function will create a label for the COUNT (n) - for Boxplot
+
+    ``` r
+    fun_n_label <- function(y) {
+      return(data.frame(y = median(y), 
+                        label = paste0("n = ", length(y))))
+    }
+    ```
+
+### Visualization No.1
 
 Count the number of users per country
 
@@ -163,9 +200,11 @@ ggplot(data = world_map_with_data) +
   theme(legend.position = "bottom")
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-4-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-6-1.png)
 
 **Table 1:** Active Spotify users by country
+
+### Visualization No.2
 
 ``` r
 # 1. Clean the subscription_type column
@@ -243,7 +282,9 @@ ggplot(
   ylim(0, max(country_totals$total_users) * 1.05)
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-5-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-7-1.png)
+
+### Visualization No.3
 
 ``` r
 # 1. Create the age groups (Your code)
@@ -256,21 +297,6 @@ data_with_age_groups <- data %>%
                     labels = c("Under 20", "20-29", "30-39", "40-49", "50-59", "60+"),
                     right = TRUE)
   )
-
-# ---
-# 2. Define label functions (New part)
-# ---
-# This function will create a label for the MEDIAN
-fun_median_label <- function(y) {
-  return(data.frame(y = median(y), 
-                    label = round(median(y), 1))) # Round median to 1 decimal
-}
-
-# This function will create a label for the COUNT (n)
-fun_n_label <- function(y) {
-  return(data.frame(y = median(y), 
-                    label = paste0("n = ", length(y))))
-}
 
 # 3. Create the box plot with labels
 ggplot(data_with_age_groups, 
@@ -305,7 +331,9 @@ ggplot(data_with_age_groups,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-6-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-8-1.png)
+
+### Visualization No.4
 
 ``` r
 # ---
@@ -337,7 +365,9 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-7-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-9-1.png)
+
+### Visualization No.5
 
 ``` r
 # ---
@@ -369,7 +399,9 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-8-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-10-1.png)
+
+### Visualization No.6
 
 ``` r
 # ---
@@ -401,4 +433,4 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-9-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-11-1.png)

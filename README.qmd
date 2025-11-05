@@ -246,21 +246,6 @@ data_with_age_groups <- data %>%
                     right = TRUE)
   )
 
-# ---
-# 2. Define label functions (New part)
-# ---
-# This function will create a label for the MEDIAN
-fun_median_label <- function(y) {
-  return(data.frame(y = median(y), 
-                    label = round(median(y), 1))) # Round median to 1 decimal
-}
-
-# This function will create a label for the COUNT (n)
-fun_n_label <- function(y) {
-  return(data.frame(y = median(y), 
-                    label = paste0("n = ", length(y))))
-}
-
 # 3. Create the box plot with labels
 ggplot(data_with_age_groups, 
        aes(x = age_group, y = listening_time, fill = age_group)) +
