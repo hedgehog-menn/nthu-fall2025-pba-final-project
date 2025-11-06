@@ -84,9 +84,21 @@ library(scales)
 
 -   Load data.
 
-```{r}
-data <- read.csv("spotify_churn_dataset.csv")
-```
+    ```{r}
+    data <- read.csv("spotify_churn_dataset.csv")
+    ```
+
+    -   Show some examples.
+
+    ```{r}
+    head(data)
+    ```
+
+    -   Show data structure.
+
+    ```{r}
+    str(data)
+    ```
 
 -   Useful function
 

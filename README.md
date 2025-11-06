@@ -122,9 +122,57 @@ library(scales)
 
 - Load data.
 
-``` r
-data <- read.csv("spotify_churn_dataset.csv")
-```
+  ``` r
+  data <- read.csv("spotify_churn_dataset.csv")
+  ```
+
+  - Show some examples.
+
+  ``` r
+  head(data)
+  ```
+
+        user_id gender age country subscription_type listening_time
+      1       1 Female  54      CA              Free             26
+      2       2  Other  33      DE            Family            141
+      3       3   Male  38      AU           Premium            199
+      4       4 Female  22      CA           Student             36
+      5       5  Other  29      US            Family            250
+      6       6 Female  17      AU              Free            219
+        songs_played_per_day skip_rate device_type ads_listened_per_week
+      1                   23      0.20     Desktop                    31
+      2                   62      0.34         Web                     0
+      3                   38      0.04      Mobile                     0
+      4                    2      0.31      Mobile                     0
+      5                   57      0.36      Mobile                     0
+      6                   35      0.46     Desktop                    13
+        offline_listening is_churned
+      1                 0          1
+      2                 1          0
+      3                 1          1
+      4                 1          0
+      5                 1          1
+      6                 0          0
+
+  - Show data structure.
+
+  ``` r
+  str(data)
+  ```
+
+      'data.frame':   8000 obs. of  12 variables:
+       $ user_id              : int  1 2 3 4 5 6 7 8 9 10 ...
+       $ gender               : chr  "Female" "Other" "Male" "Female" ...
+       $ age                  : int  54 33 38 22 29 17 39 41 55 44 ...
+       $ country              : chr  "CA" "DE" "AU" "CA" ...
+       $ subscription_type    : chr  "Free" "Family" "Premium" "Student" ...
+       $ listening_time       : int  26 141 199 36 250 219 289 210 50 278 ...
+       $ songs_played_per_day : int  23 62 38 2 57 35 44 68 66 94 ...
+       $ skip_rate            : num  0.2 0.34 0.04 0.31 0.36 0.46 0.38 0.11 0.29 0.38 ...
+       $ device_type          : chr  "Desktop" "Web" "Mobile" "Mobile" ...
+       $ ads_listened_per_week: int  31 0 0 0 0 13 0 5 0 44 ...
+       $ offline_listening    : int  0 1 1 1 1 0 1 0 1 0 ...
+       $ is_churned           : int  1 0 1 0 1 0 0 0 0 0 ...
 
 - Useful function
 
@@ -204,7 +252,7 @@ ggplot(data = world_map_with_data) +
   theme(legend.position = "bottom")
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-6-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-8-1.png)
 
 ### Visualization No.2
 
@@ -295,7 +343,7 @@ ggplot(
   ylim(0, max(country_totals$total_users) * 1.05)
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-11-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-13-1.png)
 
 ### Visualization No.3
 
@@ -346,7 +394,7 @@ ggplot(data_with_age_groups,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-13-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-15-1.png)
 
 ### Visualization No.4
 
@@ -380,7 +428,7 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-14-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-16-1.png)
 
 ### Visualization No.5
 
@@ -414,7 +462,7 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-15-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-17-1.png)
 
 ### Visualization No.6
 
@@ -448,4 +496,4 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-16-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-18-1.png)
