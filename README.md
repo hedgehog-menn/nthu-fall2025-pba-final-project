@@ -260,20 +260,11 @@ ggplot(data = world_map_with_data) +
 
 Set Up the related variables.
 
-- Clean the `subscription_type` column.
-
-``` r
-data_cleaned_for_bar_chart <- data %>%
-  mutate(
-    subscription_clean = str_to_title(str_trim(subscription_type))
-  )
-```
-
 - Count users by country AND subscription type.
 
 ``` r
-country_sub_counts <- data_cleaned_for_bar_chart %>%
-  count(country, subscription_clean, name = "user_count")
+country_sub_counts <- data %>%
+  count(country, subscription_type, name = "user_count")
 ```
 
 - Calculate total users per country.
@@ -302,7 +293,7 @@ ggplot(
   plot_data,
   aes(x = reorder(country, -total_users), 
       y = user_count, 
-      fill = subscription_clean)
+      fill = subscription_type)
 ) +
   # ---
   # Layer 1: The stacked bars
@@ -343,7 +334,7 @@ ggplot(
   ylim(0, max(country_totals$total_users) * 1.05)
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-13-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-12-1.png)
 
 ### Visualization No.3
 
@@ -394,7 +385,7 @@ ggplot(data_with_age_groups,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-15-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-14-1.png)
 
 ### Visualization No.4
 
@@ -428,7 +419,7 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-16-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-15-1.png)
 
 ### Visualization No.5
 
@@ -462,7 +453,7 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-17-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-16-1.png)
 
 ### Visualization No.6
 
@@ -496,4 +487,4 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-18-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-17-1.png)
