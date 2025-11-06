@@ -294,7 +294,7 @@ ggplot(
   # Layer 2: The internal labels (count + percentage)
   geom_text(
     aes(label = label_text), 
-    position = position_stack(vjust = 0.5), # Center label in each stack
+    position = position_stack(vjust = 0.5),
     color = "black", 
     size = 3
   ) +
@@ -356,14 +356,14 @@ ggplot(data_with_age_groups,
   # Add the MEDIAN label
   stat_summary(fun.data = fun_median_label, 
                geom = "text", 
-               vjust = -0.7,  # Nudge it up
+               vjust = -1.0,
                color = "black", 
                size = 3.5) +
   
   # Add the COUNT label
   stat_summary(fun.data = fun_n_label, 
                geom = "text", 
-               vjust = 1.5,
+               vjust = 1.8,
                color = "black",
                size = 3.5) +
   
@@ -397,7 +397,7 @@ ggplot(data,
   # Add the COUNT label
   stat_summary(fun.data = fun_n_label, 
                geom = "text", 
-               vjust = 1.5,
+               vjust = 1.8,
                color = "black",
                size = 4) +
   
@@ -424,14 +424,14 @@ ggplot(data,
   # Add the MEDIAN label
   stat_summary(fun.data = fun_median_label, 
                geom = "text", 
-               vjust = -0.7,
+               vjust = -1.0,
                color = "black", 
                size = 4) +
   
   # Add the COUNT label
   stat_summary(fun.data = fun_n_label, 
                geom = "text", 
-               vjust = 1.5,
+               vjust = 1.8,
                color = "black",
                size = 4) +
   
@@ -455,17 +455,17 @@ ggplot(data,
        aes(x = device_type, y = songs_played_per_day, fill = device_type)) +
   geom_boxplot() +
   
- # Add the MEDIAN label (places it just ABOVE the median line)
+ # Add the MEDIAN label
   stat_summary(fun.data = fun_median_label, 
                geom = "text", 
-               vjust = -0.7,
+               vjust = -1.0,
                color = "black", 
                size = 3.5) +
   
-  # Add the COUNT label (places it just BELOW the median line)
+  # Add the COUNT label
   stat_summary(fun.data = fun_n_label, 
                geom = "text", 
-               vjust = 1.5,
+               vjust = 1.8,
                color = "black",
                size = 3.5) +
   
