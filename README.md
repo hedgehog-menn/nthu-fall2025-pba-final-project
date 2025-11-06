@@ -1,6 +1,6 @@
 # Programming for Business Analytics (PBA) – Final Project
-(Ken) Kanokphan Thananchai - 112065431, (Fern) Wachiraporn Tianchot -
-112550081
+**Group 7**, (Fern) Wachiraporn Tianchot - 112550081, (Ken) Kanokphan
+Thananchai - 112065431
 
 - [Part 1: Data and Proposal](#part-1-data-and-proposal)
   - [Data resource](#data-resource)

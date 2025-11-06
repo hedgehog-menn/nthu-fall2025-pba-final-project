@@ -1,8 +1,9 @@
 ---
 title: "Programming for Business Analytics (PBA) – Final Project"
 author:
-  - "(Ken) Kanokphan Thananchai - 112065431"
+  - "**Group 7**"
   - "(Fern) Wachiraporn Tianchot -	112550081"
+  - "(Ken) Kanokphan Thananchai - 112065431"
 format:
   gfm:
     toc: true
