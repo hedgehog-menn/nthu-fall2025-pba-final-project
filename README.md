@@ -285,12 +285,11 @@ ggplot(
   aes(x = reorder(country, -total_users), 
       y = user_count, 
       fill = subscription_type)
-) +
-  # ---
+  ) +
+
   # Layer 1: The stacked bars
   geom_bar(stat = "identity", position = "stack") +
-  
-  # ---
+
   # Layer 2: The internal labels (count + percentage)
   geom_text(
     aes(label = label_text), 
@@ -299,9 +298,7 @@ ggplot(
     size = 3
   ) +
   
-  # ---
   # Layer 3: The total count label on top of each bar
-  # ---
   geom_text(
     data = country_totals,
     aes(x = reorder(country, -total_users),
@@ -312,7 +309,6 @@ ggplot(
     color = "black",
     size = 4
   ) +
-  # ---
 
   # Styling
   scale_fill_brewer(palette = "Set2", name = "Subscription Type") +
