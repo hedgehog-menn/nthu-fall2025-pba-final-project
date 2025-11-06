@@ -153,10 +153,11 @@ data <- read.csv("spotify_churn_dataset.csv")
 Let’s find out of all countries there are in the dataset and the number
 of Spotify users each country.
 
-\> \[! NOTE\]  
-\> In the upcoming visualization, it requires to use a ISO country code
-which make us to need to change the country code [UK to GB for United
-Kingdom](https://www.iso.org/obp/ui/#iso:code:3166:GBhttps://www.iso.org/obp/ui/#iso:code:3166:GB)
+> [!NOTE]
+>
+> In the upcoming visualization, it requires to use a ISO country code
+> which make us to need to change the country code [UK to GB for United
+> Kingdom](https://www.iso.org/obp/ui/#iso:code:3166:GBhttps://www.iso.org/obp/ui/#iso:code:3166:GB)
 
 ``` r
 data <- data %>%
