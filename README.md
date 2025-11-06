@@ -159,13 +159,13 @@ which make us to need to change the country code [UK to GB for United
 Kingdom](https://www.iso.org/obp/ui/#iso:code:3166:GBhttps://www.iso.org/obp/ui/#iso:code:3166:GB)
 
 ``` r
-data_fixed <- data %>%
+data <- data %>%
   mutate(country = case_when(
     country == "UK" ~ "GB",  # When country is "UK", change it to "GB"
     TRUE ~ country           # Otherwise (TRUE), keep the original code
   ))
 
-country_counts <- data_fixed %>%
+country_counts <- data %>%
   count(country, name = "user_count")
 
 print(country_counts)
@@ -214,7 +214,7 @@ Set Up the related variables.
 - Clean the `subscription_type` column.
 
 ``` r
-data_cleaned_for_bar_chart <- data_fixed %>%
+data_cleaned_for_bar_chart <- data %>%
   mutate(
     subscription_clean = str_to_title(str_trim(subscription_type))
   )
