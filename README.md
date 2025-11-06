@@ -195,7 +195,8 @@ of Spotify users each country.
 > [!NOTE]
 >
 > In the upcoming visualization, it requires to use a ISO country code
-> which make us to need to change the country code [UK to GB for United
+> which make us to need to change the country code UK to [GB for the
+> United
 > Kingdom](https://www.iso.org/obp/ui/#iso:code:3166:GBhttps://www.iso.org/obp/ui/#iso:code:3166:GB)
 
 ``` r
