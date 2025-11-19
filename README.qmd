@@ -59,7 +59,7 @@ Explain who is active, who is likely to churn, and who is likely to upgrade to P
 
 ------------------------------------------------------------------------
 
-## Part 2: Data Visualization
+## Part 2: Data Visualization & Part 3: Data Analysis
 
 ### Set Up the Environment
 
@@ -114,7 +114,7 @@ library(scales)
 
 ### Visualization No.1
 
-**Figure 1:** Active Spotify users by country
+**Figure 1:** Distribution of Users by Country
 
 Let's find out of all countries there are in the dataset and the number of Spotify users each country.
 
@@ -156,6 +156,8 @@ ggplot(data = world_map_with_data) +
   theme_minimal() +
   theme(legend.position = "bottom")
 ```
+
+The data show that Australia (1034) and the United States (1032) have the highest numbers of active Spotify users, with a little over 1,030 users each. They are followed closely by Germany (1015) and India (1011), both slightly above 1,000 users. Countries such as Pakistan (999), France (989), United Kingdom (966), and Canada (954) have slightly fewer active users, ranging from the mid-900s to just under 1,000. Overall, the differences across countries are small, but AU and US lead the group.
 
 ### Visualization No.2
 
@@ -233,6 +235,8 @@ ggplot(
   ylim(0, max(country_totals$total_users) * 1.05)
 ```
 
+Based on the subscription-type bar chart, the United States (284), United Kingdom (282), and France (274) have the highest number of Premium users, shown by the larger dark-blue sections in their bars. In contrast, Pakistan (265) and India (255) have the largest number of Free users, with noticeably bigger orange sections. The US appears high in both Premium and Free users because of its overall higher activity. Some countries like Germany and Australia have a more balanced mix across Premium, Free, Family, and Student plans.
+
 ### Visualization No.3
 
 **Figure 3:** Listening Time Across Age Groups
@@ -281,6 +285,8 @@ ggplot(data_with_age_groups,
   ) +
   theme_minimal()
 ```
+
+Listening time is quite similar across all age groups, with median values ranging from about 150 to 161 minutes per day. The 20–29 age group listens the most on average, while the 30–39 and 50–59 groups listen slightly less, but the differences are small. Overall, every age group listens for roughly 2 to 2.5 hours per day, showing that age does not strongly change listening behavior. Gender patterns (based on typical Spotify usage) usually show only small differences, with men often listening slightly longer and playing more songs, but the variation is not large. In general, both listening time and songs played per day remain fairly consistent across age groups and genders, suggesting similar engagement levels across different demographic groups.
 
 ### Visualization No.4
 
@@ -346,6 +352,34 @@ ggplot(data,
   theme_minimal()
 ```
 
+The median listening times across device types are very similar:
+
+-   **Desktop:** 157 minutes/day
+
+-   **Web:** 155 minutes/day
+
+-   **Mobile:** 150 minutes/day
+
+These small differences indicate that device type does not meaningfully influence listening duration. Regardless of whether users listen on desktop, mobile, or web, their typical daily listening time is almost the same. The boxplot also shows a wide spread within each device group. Some users listen only a few minutes per day, while others listen close to 300 minutes. This large variation suggests that listening time is driven by personal habits, not by the device used.
+
+This pattern matches what we observed in the previous Skip Rate by Subscription Type plot. In both figures:
+
+-   The medians are nearly identical across groups.
+
+-   The range of behaviors is large within each group.
+
+Together, these plots show that: Some users listen a lot, others very little regardless of device.\
+Some users skip frequently, others almost never regardless of subscription type.\
+	In other words, these behaviors depend more on individual preferences than on product tier. Being a Premium or Free user does not predict skip rate, and using Mobile or Desktop does not predict listening time. 
+
+However, certain behavioral patterns remain important for understanding churn:
+
+-   Very high skip rates often indicate dissatisfaction and are linked to higher churn risk.
+
+-   Very low listening times suggest disengagement, which also increases churn risk.
+
+Thus, although subscription type and device type do not explain much variation, individual listening patterns are still crucial predictors for churn.
+
 ### Visualization No.6
 
 **Figure 6:** Songs Played Per day by Device Type
@@ -378,3 +412,7 @@ ggplot(data,
   ) +
   theme_minimal()
 ```
+
+The number of songs played per day is almost the same across all device types Desktop (51 songs), Mobile (50), and Web (49). This shows that device type does not meaningfully influence how many songs users listen to each day. However, the wide range within each device group indicates that users differ greatly in their listening habits: some play only a few songs while others play close to 100. This pattern is consistent with the earlier plots (skip rate and listening time), where the medians across groups were nearly identical but the spread was large. Together, these results suggest that listening behavior is highly individualized, not determined by whether the user is Free, Premium, Desktop, Mobile, 
+
+For churn analysis, this means Spotify should focus on individual behavioral signals such as very low listening time, very few songs played, or high skip rates rather than device type or subscription category, because extreme user behavior predicts churn more accurately than group labels.
