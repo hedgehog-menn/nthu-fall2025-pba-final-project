@@ -370,7 +370,7 @@ This pattern matches what we observed in the previous Skip Rate by Subscription 
 
 Together, these plots show that: Some users listen a lot, others very little regardless of device.\
 Some users skip frequently, others almost never regardless of subscription type.\
-	In other words, these behaviors depend more on individual preferences than on product tier. Being a Premium or Free user does not predict skip rate, and using Mobile or Desktop does not predict listening time. 
+In other words, these behaviors depend more on individual preferences than on product tier. Being a Premium or Free user does not predict skip rate, and using Mobile or Desktop does not predict listening time. 
 
 However, certain behavioral patterns remain important for understanding churn:
 
@@ -416,3 +416,67 @@ ggplot(data,
 The number of songs played per day is almost the same across all device types Desktop (51 songs), Mobile (50), and Web (49). This shows that device type does not meaningfully influence how many songs users listen to each day. However, the wide range within each device group indicates that users differ greatly in their listening habits: some play only a few songs while others play close to 100. This pattern is consistent with the earlier plots (skip rate and listening time), where the medians across groups were nearly identical but the spread was large. Together, these results suggest that listening behavior is highly individualized, not determined by whether the user is Free, Premium, Desktop, Mobile, 
 
 For churn analysis, this means Spotify should focus on individual behavioral signals such as very low listening time, very few songs played, or high skip rates rather than device type or subscription category, because extreme user behavior predicts churn more accurately than group labels.
+
+## Data Prediction
+
+### 1. Logistic Regression to predict churn (Choose the predictive target: Churn)
+
+Using:
+
+\- SkipRate
+
+\- SongsPlayedPerDay
+
+\- ListeningTime
+
+\- SubscriptionType ({Premium, Family, Student} = 1, Free = 0)
+
+Prepare the data
+
+```{r}
+analysis_data <- data %>%
+  mutate(
+    # Create the binary variable: If type is "Free" -> 0, otherwise -> 1
+    subscription_binary = ifelse(subscription_type == "Free", 0, 1),
+    
+    # Ensure the target variable is a factor
+    is_churned = as.factor(is_churned)
+  )
+
+# Check the counts to see the new split
+table(analysis_data$subscription_binary)
+```
+
+Run Logistic Regression
+
+```{r}
+# Target: is_churned
+# Features: skip_rate, songs_played_per_day, listening_time, subscription_binary (Paid vs Free)
+churn_model <- glm(is_churned ~ skip_rate + songs_played_per_day + listening_time + subscription_binary, 
+                           data = analysis_data, 
+                           family = "binomial")
+```
+
+View the Results
+
+```{r}
+summary(churn_model)
+```
+
+**Interpretation of the `churn_model` Results**
+
+We can look at the direction of the coefficients to see what the model "tried" to find:
+
+-   **`subscription_binary` (+0.067, p=0.260):**
+
+    -   The positive coefficient suggests that **paying users (Premium/Family/Student) might be slightly *more* likely to churn** than Free users.
+
+    -   Why? Free users don't need to "cancel" anything to stop using the service; they just stop listening. Premium users actively churn by cancelling payments. However, the result is not strong enough to be certain.
+
+-   **`skip_rate` (+0.211, p=0.151):**
+
+    -   Users who skip more songs are slightly more likely to churn. This matches intuition (dissatisfaction), but the effect is weak.
+
+-   **`songs_played` & `listening_time`:**
+
+    -   These coefficients are tiny (0.0007 and -0.0001). The amount of time spent listening has almost **no linear relationship** with whether a user cancels or stays.

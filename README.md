@@ -17,6 +17,10 @@ Thananchai - 112065431
   - [Visualization No.4](#visualization-no4)
   - [Visualization No.5](#visualization-no5)
   - [Visualization No.6](#visualization-no6)
+- [Data Prediction](#data-prediction)
+  - [1. Logistic Regression to predict churn (Choose the predictive
+    target:
+    Churn)](#1-logistic-regression-to-predict-churn-choose-the-predictive-target-churn)
 
 ## Part 1: Data and Proposal
 
@@ -569,3 +573,104 @@ behavioral signals such as very low listening time, very few songs
 played, or high skip rates rather than device type or subscription
 category, because extreme user behavior predicts churn more accurately
 than group labels.
+
+## Data Prediction
+
+### 1. Logistic Regression to predict churn (Choose the predictive target: Churn)
+
+Using:
+
+\- SkipRate
+
+\- SongsPlayedPerDay
+
+\- ListeningTime
+
+\- SubscriptionType ({Premium, Family, Student} = 1, Free = 0)
+
+Prepare the data
+
+``` r
+analysis_data <- data %>%
+  mutate(
+    # Create the binary variable: If type is "Free" -> 0, otherwise -> 1
+    subscription_binary = ifelse(subscription_type == "Free", 0, 1),
+    
+    # Ensure the target variable is a factor
+    is_churned = as.factor(is_churned)
+  )
+
+# Check the counts to see the new split
+table(analysis_data$subscription_binary)
+```
+
+
+       0    1 
+    2018 5982 
+
+Run Logistic Regression
+
+``` r
+# Target: is_churned
+# Features: skip_rate, songs_played_per_day, listening_time, subscription_binary (Paid vs Free)
+churn_model <- glm(is_churned ~ skip_rate + songs_played_per_day + listening_time + subscription_binary, 
+                           data = analysis_data, 
+                           family = "binomial")
+```
+
+View the Results
+
+``` r
+summary(churn_model)
+```
+
+
+    Call:
+    glm(formula = is_churned ~ skip_rate + songs_played_per_day + 
+        listening_time + subscription_binary, family = "binomial", 
+        data = analysis_data)
+
+    Coefficients:
+                           Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)          -1.1718640  0.0945173 -12.398   <2e-16 ***
+    skip_rate             0.2113848  0.1471318   1.437    0.151    
+    songs_played_per_day  0.0007235  0.0008979   0.806    0.420    
+    listening_time       -0.0001965  0.0003040  -0.646    0.518    
+    subscription_binary   0.0667288  0.0592889   1.125    0.260    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    (Dispersion parameter for binomial family taken to be 1)
+
+        Null deviance: 9150.0  on 7999  degrees of freedom
+    Residual deviance: 9145.6  on 7995  degrees of freedom
+    AIC: 9155.6
+
+    Number of Fisher Scoring iterations: 4
+
+**Interpretation of the `churn_model` Results**
+
+We can look at the direction of the coefficients to see what the model
+“tried” to find:
+
+- **`subscription_binary` (+0.067, p=0.260):**
+
+  - The positive coefficient suggests that **paying users
+    (Premium/Family/Student) might be slightly *more* likely to churn**
+    than Free users.
+
+  - Why? Free users don’t need to “cancel” anything to stop using the
+    service; they just stop listening. Premium users actively churn by
+    cancelling payments. However, the result is not strong enough to be
+    certain.
+
+- **`skip_rate` (+0.211, p=0.151):**
+
+  - Users who skip more songs are slightly more likely to churn. This
+    matches intuition (dissatisfaction), but the effect is weak.
+
+- **`songs_played` & `listening_time`:**
+
+  - These coefficients are tiny (0.0007 and -0.0001). The amount of time
+    spent listening has almost **no linear relationship** with whether a
+    user cancels or stays.
