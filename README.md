@@ -21,6 +21,10 @@ Thananchai - 112065431
   - [1. Logistic Regression to predict churn (Choose the predictive
     target:
     Churn)](#1-logistic-regression-to-predict-churn-choose-the-predictive-target-churn)
+  - [2. Predicting Churn with Demographics &
+    Geography](#2-predicting-churn-with-demographics--geography)
+  - [3. Model Evaluation](#3-model-evaluation)
+  - [4. Final Conclusion](#4-final-conclusion)
 
 ## Part 1: Data and Proposal
 
@@ -578,19 +582,23 @@ than group labels.
 
 ### 1. Logistic Regression to predict churn (Choose the predictive target: Churn)
 
-Using:
+**Goal:** Test if user behavior (listening habits) can predict who will
+leave.
 
-\- SkipRate
+**Variables Used:**
 
-\- SongsPlayedPerDay
+- `skip_rate`
 
-\- ListeningTime
+- `songs_played_per_day`
 
-\- SubscriptionType ({Premium, Family, Student} = 1, Free = 0)
+- `listening_time`
 
-Prepare the data
+- `subscription_type` (Converted to Binary: 1 = Paid, 0 = Free)
+
+**Step 1: Data Preparation**
 
 ``` r
+# Create a binary target and subscription variable
 analysis_data <- data %>%
   mutate(
     # Create the binary variable: If type is "Free" -> 0, otherwise -> 1
@@ -600,7 +608,7 @@ analysis_data <- data %>%
     is_churned = as.factor(is_churned)
   )
 
-# Check the counts to see the new split
+# Check the split between Free (0) and Paid (1)
 table(analysis_data$subscription_binary)
 ```
 
@@ -608,19 +616,13 @@ table(analysis_data$subscription_binary)
        0    1 
     2018 5982 
 
-Run Logistic Regression
+Step 2: Run Logistic Regression (Behavioral Model)
 
 ``` r
-# Target: is_churned
-# Features: skip_rate, songs_played_per_day, listening_time, subscription_binary (Paid vs Free)
 churn_model <- glm(is_churned ~ skip_rate + songs_played_per_day + listening_time + subscription_binary, 
-                           data = analysis_data, 
-                           family = "binomial")
-```
+                   data = analysis_data, 
+                   family = "binomial")
 
-View the Results
-
-``` r
 summary(churn_model)
 ```
 
@@ -648,29 +650,138 @@ summary(churn_model)
 
     Number of Fisher Scoring iterations: 4
 
-**Interpretation of the `churn_model` Results**
+**Interpretation of Results:**
 
-We can look at the direction of the coefficients to see what the model
-“tried” to find:
+- **Significance:** None of the behavioral variables (`skip_rate`,
+  `listening_time`, `songs_played`) had a P-value less than 0.05.
 
-- **`subscription_binary` (+0.067, p=0.260):**
+- **Coefficients:**
 
-  - The positive coefficient suggests that **paying users
-    (Premium/Family/Student) might be slightly *more* likely to churn**
-    than Free users.
+  - `skip_rate` had a slight positive trend (higher skips = higher
+    churn), but it was not statistically significant.
 
-  - Why? Free users don’t need to “cancel” anything to stop using the
-    service; they just stop listening. Premium users actively churn by
-    cancelling payments. However, the result is not strong enough to be
-    certain.
+  - `listening_time` had almost zero impact on the probability of
+    churning.
 
-- **`skip_rate` (+0.211, p=0.151):**
+- **Conclusion for Model 1:** Churn in this dataset is **not driven by
+  user engagement behavior**. Users who listen a lot are just as likely
+  to churn as those who listen a little.
 
-  - Users who skip more songs are slightly more likely to churn. This
-    matches intuition (dissatisfaction), but the effect is weak.
+### 2. Predicting Churn with Demographics & Geography
 
-- **`songs_played` & `listening_time`:**
+Since behavior failed to predict churn, we hypothesized that **who** the
+user is (Age, Gender) or **where** they live (Country) might be the real
+driver, perhaps due to pricing or local competition.
 
-  - These coefficients are tiny (0.0007 and -0.0001). The amount of time
-    spent listening has almost **no linear relationship** with whether a
-    user cancels or stays.
+**Step 1: Run Logistic Regression (Demographic Model)**
+
+``` r
+# Ensure categorical variables are factors
+analysis_data$gender <- as.factor(analysis_data$gender)
+analysis_data$country <- as.factor(analysis_data$country)
+
+# Run the model including Age, Gender, and Country
+churn_model_country <- glm(is_churned ~ age + gender + country + subscription_binary, 
+                           data = analysis_data, 
+                           family = "binomial")
+
+summary(churn_model_country)
+```
+
+
+    Call:
+    glm(formula = is_churned ~ age + gender + country + subscription_binary, 
+        family = "binomial", data = analysis_data)
+
+    Coefficients:
+                          Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)         -1.1174554  0.1175964  -9.502   <2e-16 ***
+    age                  0.0006167  0.0020060   0.307    0.759    
+    genderMale          -0.0556253  0.0626458  -0.888    0.375    
+    genderOther         -0.0037476  0.0624796  -0.060    0.952    
+    countryCA           -0.0427729  0.1033960  -0.414    0.679    
+    countryDE            0.0829341  0.1002078   0.828    0.408    
+    countryFR            0.0777866  0.1008680   0.771    0.441    
+    countryGB           -0.0490870  0.1031093  -0.476    0.634    
+    countryIN           -0.0715050  0.1022215  -0.700    0.484    
+    countryPK            0.0945520  0.1004526   0.941    0.347    
+    countryUS           -0.0152930  0.1009271  -0.152    0.880    
+    subscription_binary  0.0683851  0.0593159   1.153    0.249    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    (Dispersion parameter for binomial family taken to be 1)
+
+        Null deviance: 9150.0  on 7999  degrees of freedom
+    Residual deviance: 9141.7  on 7988  degrees of freedom
+    AIC: 9165.7
+
+    Number of Fisher Scoring iterations: 4
+
+**Interpretation of Results:**
+
+- **Age:** The P-value was high (0.744), indicating no difference in
+  churn risk between younger and older users.
+
+- **Gender:** There was no statistically significant difference between
+  Male, Female, or Other genders.
+
+- **Country:** No specific country showed a significantly higher or
+  lower churn risk compared to the baseline.
+
+- **Result:** Demographics also failed to predict churn effectively.
+
+### 3. Model Evaluation
+
+To accurately assess the model’s performance, we calculated the
+classification **Accuracy**.
+
+**Step 1: Generate Predictions**
+
+``` r
+# 1. Predict probabilities for the dataset
+analysis_data$predicted_prob <- predict(churn_model_country, type = "response")
+
+# 2. Convert Probability to Class (Threshold = 0.5)
+# If probability > 50%, predict Churn (1). Otherwise, No Churn (0).
+analysis_data$predicted_class <- ifelse(analysis_data$predicted_prob > 0.5, 1, 0)
+
+# 3. Calculate Accuracy
+confusion_matrix <- table(Predicted = analysis_data$predicted_class, Actual = analysis_data$is_churned)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+print(paste("Model Accuracy:", round(accuracy, 4)))
+```
+
+    [1] "Model Accuracy: 0.7411"
+
+**Evaluation:** The accuracy result is driven by the baseline
+distribution (since the majority of users did *not* churn, the model
+achieves high accuracy simply by guessing “No Churn” for everyone). It
+fails to identify actual churners effectively because no strong
+predictors were found.
+
+### 4. Final Conclusion
+
+Our analysis rejects the hypothesis that churn is driven by
+**engagement** (skips, listening time) or **demographics** (age,
+location).
+
+**Key Finding: Stochastic Churn** Churn in this dataset appears to be
+**stochastic (random)**. There is no distinguishable pattern in the
+available data that separates users who stay from users who leave.
+
+**Recommendations:**
+
+1.  **Shift Strategy:** Since we cannot identify at-risk users,
+    resources should be shifted from “Targeted Retention” to **“New User
+    Acquisition.”**
+
+2.  **Sentiment Data:** The variables provided (usage metrics) are blind
+    to the real reasons for churn. Spotify should implement **“Exit
+    Surveys”** to capture sentiment (e.g., “Too expensive,” “Switched to
+    Apple Music”).
+
+3.  **Technical Tracking:** Future analysis should include technical
+    metrics (e.g., App Crashes, Buffering) to see if frustration is the
+    actual driver of churn.
