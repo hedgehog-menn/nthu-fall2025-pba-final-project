@@ -1,62 +1,99 @@
-# Programming for Business Analytics (PBA) – Final Project
-**Group 7**, (Fern) Wachiraporn Tianchot - 112550081, (Ken) Kanokphan
-Thananchai - 112065431
+# Final Project Data and Proposal
 
-- [Part 1: Data and Proposal](#part-1-data-and-proposal)
-  - [Data resource](#data-resource)
-  - [Proposal](#proposal)
-  - [Purpose](#purpose)
-  - [Variables](#variables)
-  - [Questions](#questions)
-- [Part 2: Data Visualization & Part 3: Data
-  Analysis](#part-2-data-visualization--part-3-data-analysis)
-  - [Set Up the Environment](#set-up-the-environment)
-  - [Visualization No.1](#visualization-no1)
-  - [Visualization No.2](#visualization-no2)
-  - [Visualization No.3](#visualization-no3)
-  - [Visualization No.4](#visualization-no4)
-  - [Visualization No.5](#visualization-no5)
-  - [Visualization No.6](#visualization-no6)
 
-## Part 1: Data and Proposal
+- [<span class="toc-section-number">1</span>
+  Introduction](#introduction)
+- [<span class="toc-section-number">2</span> Research
+  Design](#research-design)
+  - [<span class="toc-section-number">2.1</span> Identification
+    Strategy](#identification-strategy)
+  - [<span class="toc-section-number">2.2</span> Treatment and Outcome
+    Variables](#treatment-and-outcome-variables)
+  - [<span class="toc-section-number">2.3</span> Covariates and
+    Moderators](#covariates-and-moderators)
+- [<span class="toc-section-number">3</span> Data](#data)
+  - [<span class="toc-section-number">3.1</span> Data
+    Sources](#data-sources)
+  - [<span class="toc-section-number">3.2</span> Sample
+    Construction](#sample-construction)
+  - [<span class="toc-section-number">3.3</span> Key
+    Variables](#key-variables)
+- [<span class="toc-section-number">4</span> Data Visualization & Data
+  Analysis](#data-visualization--data-analysis)
+  - [<span class="toc-section-number">4.1</span> Set Up the
+    Environment](#set-up-the-environment)
+  - [<span class="toc-section-number">4.2</span> Visualization
+    No.1](#visualization-no1)
+  - [<span class="toc-section-number">4.3</span> Visualization
+    No.2](#visualization-no2)
+  - [<span class="toc-section-number">4.4</span> Visualization
+    No.3](#visualization-no3)
+  - [<span class="toc-section-number">4.5</span> Visualization
+    No.4](#visualization-no4)
+  - [<span class="toc-section-number">4.6</span> Visualization
+    No.5](#visualization-no5)
+  - [<span class="toc-section-number">4.7</span> Visualization
+    No.6](#visualization-no6)
 
-### Data resource
+**Programming for Business Analytics (PBA) – Graduate**
 
-- [\[Kaggle\] Spotify Analysis Dataset
-  2025](https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis)
+**Group 7**
 
-### Proposal
+1.  Wachiraporn Tianchot - 112550081
 
-We will analyze Spotify dataset with user-level behavior (listening
-time, skips), plan type (Free/Premium), ads exposure, devices,
-demographics, and a churn flag. This lets us explore engagement patterns
-and illustrate churn/upgrade dynamics in a transparent, visual way.
+2.  Kanokphan Thananchai - 112065431
 
-### Purpose
+**Data resource:** [\[Kaggle\] Spotify Analysis Dataset
+2025](https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis)
 
-Explain who is active, who is likely to churn, and who is likely to
-upgrade to Premium then translate those insights into simple, testable
-actions (upsell targeting, ad-light trials, playlist nudges) to improve
-retention and conversion.
+## Introduction
 
-### Variables
+In today’s competitive music streaming landscape, understanding user
+behavior is essential for sustaining engagement and driving growth. Our
+project leverages the Spotify Analysis Dataset 2025, which contains
+detailed user-level data, including listening time, skip rates, plan
+types (Free or Premium), ad exposure, device usage, demographic
+information, and a churn flag. 
 
-| Variable                | Detail                                    |
-|-------------------------|-------------------------------------------|
-| `user_id`               | Unique identifier for each user           |
-| `gender`                | Male/Female/Other                         |
-| `age`                   | User age                                  |
-| `country`               | User Location                             |
-| `subscription_type`     | Free, Premium, Family, Student            |
-| `listening_time`        | Minutes spent listening per day           |
-| `songs_played_per_day`  | Number of songs played daily              |
-| `skip_rate`             | Percentage of songs skipped               |
-| `device_type`           | Device used (Mobile, Desktop, Web)        |
-| `ads_listened_per_week` | Number of ads heard per week              |
-| `offline_listening`     | Offline mode usage                        |
-| `is_churned`            | Target variable (0 = Active, 1 = Churned) |
+By examining these variables, we aim to uncover key engagement patterns
+that explain who remains active, who is at risk of churning, and who
+shows potential to upgrade to Premium. Through this analysis, we will
+visualize churn and upgrade dynamics in a clear, data-driven way. The
+ultimate goal is to translate these insights into simple, actionable
+strategies such as targeted upsell campaigns, ad-light trial offers, and
+personalized playlist nudges to improve user retention and conversion.
 
-### Questions
+## Research Design
+
+This study investigates user behavior patterns on Spotify using the
+Spotify Analysis Dataset 2025. We aim to explore how demographic,
+behavioral, and usage-related factors relate to engagement, churn, and
+upgrade behavior among users across different countries. We will apply
+descriptive statistics, correlation analysis, and predictive modeling
+techniques. These methods allow us to quantify user engagement, identify
+churn risk factors, and uncover potential drivers of Premium
+subscription upgrades. The analysis will be complemented with
+visualizations to make user patterns and behavioral insights more
+interpretable for decision-making and marketing applications.
+
+### Identification Strategy
+
+Our main identification strategy is based on analyzing user-level
+behavioral patterns within the Spotify Analysis Dataset 2025. We
+identify relationships and potential causal pathways between user
+characteristics (age, gender, plan type, device, ad exposure) and
+behavioral outcomes such as listening activity, churn, and Premium
+upgrades.
+
+To estimate these effects, we employ a combination of descriptive
+analytics, regression modeling, and machine learning–based causal
+inference techniques. First, we use exploratory data analysis (EDA) and
+correlation visualization to identify broad engagement trends across
+countries, age groups, and genders. Then, to understand drivers of churn
+and upgrade behavior, we use predictive modeling approaches, such as
+logistic regression which capture both linear and nonlinear effects.
+
+**Questions:**
 
 1.  Which countries have the most active Spotify users?
 
@@ -76,9 +113,161 @@ retention and conversion.
 7.  Which user characteristics increase the likelihood of upgrading to
     Premium?
 
-------------------------------------------------------------------------
+### Treatment and Outcome Variables
 
-## Part 2: Data Visualization & Part 3: Data Analysis
+In this study, the treatment variables represent user characteristics
+and engagement factors that may influence churn and upgrade behavior on
+Spotify. These variables are defined at the user level and include:
+
+- **plan_type**: 1 if the user is a Premium subscriber, 0 if Free.
+
+- **ads_exposure**: the number of ads listened to per week.
+
+- **device_type**: categorized as mobile, desktop, or other.
+
+- **listening_time**: total minutes of music played per week.
+
+- **skip_rate**: the proportion of skipped songs relative to total songs
+  played.
+
+- **demographics**: age group and gender.
+
+To capture user engagement dynamics, we construct interaction terms
+where relevant (device_type × plan_type) to examine how usage context
+may moderate listening behavior or churn probability.
+
+The **outcome variable** of primary interest is **user churn**, defined
+as a binary indicator:
+
+$$
+  Churn =
+  \begin{cases}
+    1 & \text{if the user stops using Spotify within a defined period}\\
+    0 & \text{if the user remains active}\\
+  \end{cases}
+$$
+
+For extended analysis, a secondary outcome variable **upgrade
+probability** is also introduced, representing whether a Free user
+upgrades to Premium during the observation period:
+
+$$
+  Upgrade =
+  \begin{cases}
+    1 & \text{if a Free user upgrades to Premium}\\
+    0 & \text{otherwise}\\
+  \end{cases}
+$$
+
+These outcome variables allow us to investigate how engagement factors
+(listening time, skip rate, ad exposure, device type, and demographics)
+influence user retention and conversion behavior. The relationship
+between these predictors and churn or upgrade probability will be
+estimated through regression and machine learning models, providing
+interpretable insights into what drives user loyalty and monetization on
+Spotify.
+
+### Covariates and Moderators
+
+To ensure that the estimated relationships between user behavior and
+churn or upgrade outcomes are not driven by confounding factors, we
+include several user-level and country-level covariates in the analysis.
+User-level covariates capture individual usage and demographic
+characteristics that may influence engagement and retention:
+
+- **age:** user’s age or age group.
+
+- **gender:** male, female, or other.
+
+- **listening_time:** total minutes of music streamed per week.
+
+- **songs_played_per_day:** daily listening activity measure.
+
+- **skip_rate: proportion of skipped songs relative to total plays.**
+
+- **ads_exposure:** number of ads heard per week.
+
+- **device_type:** categorized as mobile, desktop, Web.
+
+To explore **heterogeneous effects**, two moderators are included:
+
+- **plan_type**: 1 if Premium, 0 if Free  to test whether behavioral
+  drivers differ between paid and free users.
+
+- **device_category**: 1 if mobile, 0 if non-mobile  to assess how
+  listening context influences churn and engagement.
+
+## Data
+
+This study uses the Spotify Analysis Dataset 2025, which contains
+user-level behavioral and demographic information collected from
+Spotify’s global streaming platform. The dataset includes detailed
+variables on listening activity, subscription type, ad exposure, device
+usage, and churn status, enabling a comprehensive analysis of engagement
+and conversion patterns.
+
+### Data Sources
+
+The data used in this study are derived from the Spotify Analysis
+Dataset 2025, which consolidates multiple user-level data components
+from Spotify’s global platform. The dataset provides detailed
+behavioral, demographic, and subscription-related information for users
+across various countries.
+
+- **User-level data:** Includes individual characteristics such as age,
+  gender, country, and subscription plan (Free or Premium). Behavioral
+  metrics such as total listening time, skip rate, number of songs
+  played per day, and ad exposure are also included.
+
+- **Device data:** Captures the primary listening device type (mobile,
+  desktop, or Web), which allows for the analysis of engagement
+  differences across devices.
+
+- **Churn and upgrade information:** Indicates whether a user
+  discontinued Spotify usage (churned) or upgraded from a Free to
+  Premium plan during the observation period.
+
+The dataset represents a **cross-sectional sample of users globally in
+2025**, capturing variations in usage behavior, demographics, and
+engagement outcomes. This structure enables comparative analysis of user
+activity, churn, and upgrade tendencies across diverse geographic and
+demographic segments.
+
+### Sample Construction
+
+I merge firm-year observations with state-level variables by the firm’s
+state and calendar year. We exclude firms with missing values for key
+outcome or treatment variables, and increase extreme values for
+financial covariates at the 5th and 95th percentiles to reduce the
+impact of outliers. Treatment assignment is defined at the state level:
+
+- treated = 1 if the firm is in a state that has adopted PFL by 2022.
+
+- post = 1 if the year is greater than or equal to the state’s
+  Effective_Year.
+
+Matched samples are created using nearest neighbor matching on
+pre-treatment covariates to reduce imbalance between treated and control
+firms.
+
+### Key Variables
+
+| Variable                | Detail                                    |
+|-------------------------|-------------------------------------------|
+| `user_id`               | Unique identifier for each user           |
+| `gender`                | Male/Female/Other                         |
+| `age`                   | User age                                  |
+| `country`               | User Location                             |
+| `subscription_type`     | Free, Premium, Family, Student            |
+| `listening_time`        | Minutes spent listening per day           |
+| `songs_played_per_day`  | Number of songs played daily              |
+| `skip_rate`             | Percentage of songs skipped               |
+| `device_type`           | Device used (Mobile, Desktop, Web)        |
+| `ads_listened_per_week` | Number of ads heard per week              |
+| `offline_listening`     | Offline mode usage                        |
+| `is_churned`            | Target variable (0 = Active, 1 = Churned) |
+
+## Data Visualization & Data Analysis
 
 ### Set Up the Environment
 
