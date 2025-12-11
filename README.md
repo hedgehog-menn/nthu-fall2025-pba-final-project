@@ -591,7 +591,8 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-14-1.png)
+<img src="README_files/figure-commonmark/unnamed-chunk-14-1.png"
+data-fig-align="center" />
 
 ***Figure 4:** Skip Rate Distribution by Subscription Type*
 
@@ -645,7 +646,8 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-15-1.png)
+<img src="README_files/figure-commonmark/unnamed-chunk-15-1.png"
+data-fig-align="center" />
 
 ***Figure 5:** Listening Time by Device Type*
 
@@ -721,9 +723,14 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-16-1.png)
+<img src="README_files/figure-commonmark/unnamed-chunk-16-1.png"
+data-fig-align="center" />
+
+<div style="text-align: center;">
 
 ***Figure 6:** Songs Played Per day by Device Type*
+
+</div>
 
 The number of songs played per day is almost the same across all device
 types Desktop (51 songs), Mobile (50), and Web (49). This shows that
