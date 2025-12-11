@@ -18,22 +18,8 @@
     Construction](#sample-construction)
   - [<span class="toc-section-number">3.3</span> Key
     Variables](#key-variables)
-- [<span class="toc-section-number">4</span> Data Visualization & Data
-  Analysis](#data-visualization--data-analysis)
-  - [<span class="toc-section-number">4.1</span> Set Up the
-    Environment](#set-up-the-environment)
-  - [<span class="toc-section-number">4.2</span> Visualization
-    No.1](#visualization-no1)
-  - [<span class="toc-section-number">4.3</span> Visualization
-    No.2](#visualization-no2)
-  - [<span class="toc-section-number">4.4</span> Visualization
-    No.3](#visualization-no3)
-  - [<span class="toc-section-number">4.5</span> Visualization
-    No.4](#visualization-no4)
-  - [<span class="toc-section-number">4.6</span> Visualization
-    No.5](#visualization-no5)
-  - [<span class="toc-section-number">4.7</span> Visualization
-    No.6](#visualization-no6)
+- [<span class="toc-section-number">4</span> Data
+  Visualization](#data-visualization)
 
 **Programming for Business Analytics (PBA) – Graduate**
 
@@ -267,9 +253,11 @@ firms.
 | `offline_listening`     | Offline mode usage                        |
 | `is_churned`            | Target variable (0 = Active, 1 = Churned) |
 
-## Data Visualization & Data Analysis
+## Data Visualization
 
-### Set Up the Environment
+------------------------------------------------------------------------
+
+**Set Up the Environment**
 
 - Load the libraries.
 
@@ -375,21 +363,12 @@ library(scales)
     }
     ```
 
-### Visualization No.1
-
-**Figure 1:** Distribution of Users by Country
-
-Let’s find out of all countries there are in the dataset and the number
-of Spotify users each country.
-
-> [!NOTE]
->
-> In the upcoming visualization, it requires to use a ISO country code
-> which make us to need to change the country code UK to [GB for the
-> United
-> Kingdom](https://www.iso.org/obp/ui/#iso:code:3166:GBhttps://www.iso.org/obp/ui/#iso:code:3166:GB)
+------------------------------------------------------------------------
 
 ``` r
+# In the upcoming visualization, it requires to use a ISO country code 
+# which make us to need to change the country code UK to GB for the United Kingdom
+
 data <- data %>%
   mutate(country = case_when(
     country == "UK" ~ "GB",  # When country is "UK", change it to "GB"
@@ -412,7 +391,7 @@ print(country_counts)
     7      PK        999
     8      US       1032
 
-Visualize the data on a world map.
+***Table 1:** Active Spotify users by country*
 
 ``` r
 world_map <- ne_countries(scale = "medium", returnclass = "sf")
@@ -436,6 +415,8 @@ ggplot(data = world_map_with_data) +
 
 ![](README_files/figure-commonmark/unnamed-chunk-8-1.png)
 
+***Figure 1:** Distribution of Users by Country*
+
 The data show that Australia (1034) and the United States (1032) have
 the highest numbers of active Spotify users, with a little over 1,030
 users each. They are followed closely by Germany (1015) and India
@@ -443,32 +424,21 @@ users each. They are followed closely by Germany (1015) and India
 (999), France (989), United Kingdom (966), and Canada (954) have
 slightly fewer active users, ranging from the mid-900s to just under
 1,000. Overall, the differences across countries are small, but AU and
-US lead the group.
-
-### Visualization No.2
-
-**Figure 2:** User by Country and Subscription Type
-
-Set Up the related variables.
-
-- Count users by country AND subscription type.
+US lead the group.Visualization No.2
 
 ``` r
+# Count users by country AND subscription type.
 country_sub_counts <- data %>%
   count(country, subscription_type, name = "user_count")
 ```
 
-- Calculate total users per country.
-
 ``` r
+# Calculate total users per country.
 country_totals <- country_sub_counts %>%
   group_by(country) %>%
   summarise(total_users = sum(user_count))
-```
 
-- Prepare data for the stacked segments.
-
-``` r
+# Prepare data for the stacked segments.
 plot_data <- country_sub_counts %>%
   left_join(country_totals, by = "country") %>%
   mutate(
@@ -477,9 +447,8 @@ plot_data <- country_sub_counts %>%
   )
 ```
 
-Create the stacked bar chart
-
 ``` r
+# Create the stacked bar chart
 ggplot(
   plot_data,
   aes(x = reorder(country, -total_users), 
@@ -521,7 +490,9 @@ ggplot(
   ylim(0, max(country_totals$total_users) * 1.05)
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-12-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-11-1.png)
+
+***Figure 2:** User by Country and Subscription Type*
 
 Based on the subscription-type bar chart, the United States (284),
 United Kingdom (282), and France (274) have the highest number of
@@ -532,13 +503,8 @@ both Premium and Free users because of its overall higher activity. Some
 countries like Germany and Australia have a more balanced mix across
 Premium, Free, Family, and Student plans.
 
-### Visualization No.3
-
-**Figure 3:** Listening Time Across Age Groups
-
-Set Up the related variable - Create the age groups
-
 ``` r
+# Set Up the related variable - Create the age groups
 data_with_age_groups <- data %>%
   mutate(
     age_group = cut(age, 
@@ -550,9 +516,8 @@ data_with_age_groups <- data %>%
   )
 ```
 
-Create the box plot
-
 ``` r
+# Create the box plot
 ggplot(data_with_age_groups, 
        aes(x = age_group, y = listening_time, fill = age_group)) +
 
@@ -581,7 +546,9 @@ ggplot(data_with_age_groups,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-14-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-13-1.png)
+
+***Figure 3:** Listening Time Across Age Groups*
 
 Listening time is quite similar across all age groups, with median
 values ranging from about 150 to 161 minutes per day. The 20–29 age
@@ -595,10 +562,6 @@ variation is not large. In general, both listening time and songs played
 per day remain fairly consistent across age groups and genders,
 suggesting similar engagement levels across different demographic
 groups.
-
-### Visualization No.4
-
-**Figure 4:** Skip Rate Distribution by Subscription Type
 
 ``` r
 ggplot(data, 
@@ -628,11 +591,31 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-15-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-14-1.png)
 
-### Visualization No.5
+***Figure 4:** Skip Rate Distribution by Subscription Type*
 
-**Figure 5:** Listening Time by Device Type
+The skip rate is almost identical across all subscription types, with
+each group showing a median of around 0.3 or 30% This indicates that
+subscription type does not influence how often users skip songs. All
+groups Family, Free, Premium, and Student  display nearly the same
+central behavior when it comes to skipping tracks. However, the boxplot
+shows a wide spread in each subscription group. This means that while
+the average skipping behavior is the same, individual differences are
+large. Some users rarely skip songs, while others skip nearly half of
+the tracks they play. This suggests that skip rate is driven by personal
+listening habits, not by whether someone is a Free or Premium user.
+
+From a behavioral perspective, a high skip rate often reflects
+mismatched music recommendations, which can lead to frustration or
+dissatisfaction. This makes skip rate a meaningful predictor for churn
+not because subscription types differ, but because high skip-rate users
+exist in every subscription category. Users who frequently skip songs
+are more likely to be unhappy with their listening experience,
+increasing the likelihood of churn regardless of whether they are Free,
+Premium, Family, or Student. In other words, even a Premium user with a
+skip rate of 45 percent may still be at high churn risk if they
+consistently feel the recommendations do not match their preferences.
 
 ``` r
 ggplot(data, 
@@ -662,7 +645,9 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-16-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-15-1.png)
+
+***Figure 5:** Listening Time by Device Type*
 
 The median listening times across device types are very similar:
 
@@ -708,10 +693,6 @@ Thus, although subscription type and device type do not explain much
 variation, individual listening patterns are still crucial predictors
 for churn.
 
-### Visualization No.6
-
-**Figure 6:** Songs Played Per day by Device Type
-
 ``` r
 ggplot(data, 
        aes(x = device_type, y = songs_played_per_day, fill = device_type)) +
@@ -740,7 +721,9 @@ ggplot(data,
   theme_minimal()
 ```
 
-![](README_files/figure-commonmark/unnamed-chunk-17-1.png)
+![](README_files/figure-commonmark/unnamed-chunk-16-1.png)
+
+***Figure 6:** Songs Played Per day by Device Type*
 
 The number of songs played per day is almost the same across all device
 types Desktop (51 songs), Mobile (50), and Web (49). This shows that
