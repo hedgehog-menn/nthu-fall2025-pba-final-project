@@ -321,9 +321,9 @@ Spotify, 0 otherwise). The key explanatory variables include individual
 engagement metrics skip_rate, songs_played_per_day, listening_time, and
 subscription_binary (1 = Paid plan, 0 = Free plan):
 
-$$
-logit (Churni​​) = \alpha + \beta_1​(skip\_ratei​) + \beta_2(songs\_played\_per\_dayi​) + \beta_3(listening\_timei​) + β_4 (subscription\_binaryi​)
-$$
+``` math
+logit(Churn_i) = \alpha + \beta_1 (skip\_rate_i) + \beta_2 (songs\_played\_per\_day_i)+ \beta_3 (listening\_time_i) + \beta_4 (subscription\_binary_i)
+```
 
 This baseline model does not include control variables or group-level
 fixed effects, it captures the raw behavioral association between
@@ -337,7 +337,7 @@ user-specific characteristics and regional market effects that could
 influence engagement or retention.
 
 $$
-logit(Churni​) = \alpha + \beta X_i ​+ \gamma D_i​ + \epsilon_i​
+logit(Churn_i​) = \alpha + \beta X_i ​+ \gamma D_i​ + \epsilon_i​
 $$
 
 where $X_i$ represents behavioral variables and $D_i$ denotes
@@ -370,7 +370,7 @@ per day vary by subscription status or listening environment. The
 extended model is expressed as:
 
 $$
-logit(Churni​) = \alpha + \beta_1X_i ​+ \beta_2X_i ​+ \beta_3​(X_i\times M_i) + \gamma Z_i ​+ \epsilon_i​
+logit(Churn_i​) = \alpha + \beta_1 X_i ​+ \beta_2 X_i ​+ \beta_3​ (X_i\times M_i) + \gamma Z_i ​+ \epsilon_i​
 $$
 
 - $X_i$  represents user engagement variables (skip_rate,
