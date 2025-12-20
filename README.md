@@ -33,6 +33,7 @@
   - [<span class="toc-section-number">5.3</span> Baseline Logistic
     Regression and Extended Model
     Results](#baseline-logistic-regression-and-extended-model-results)
+- [<span class="toc-section-number">6</span> ETC](#etc)
 
 **Programming for Business Analytics (PBA) – Graduate**
 
@@ -1128,3 +1129,39 @@ churn lose significance. Consequently, the findings emphasize the need
 for richer data sources such as satisfaction surveys, app performance
 metrics, or pricing sensitivity  to better capture the true drivers of
 user disengagement.
+
+## ETC
+
+subscription_type vs device_type
+
+``` r
+# 1. Prepare the comparison data (Overall Percentage)
+compare_subscription_device_type <- data |>
+  count(subscription_type, device_type) |>
+  mutate(
+    percentage = n / sum(n),
+    # Create label: Count (Overall %)"
+    label_text = paste0(n, "\n(", percent(percentage, accuracy = 0.1), ")")
+  )
+
+# 2. Create the Heatmap
+ggplot(compare_subscription_device_type, aes(x = subscription_type, y = device_type, fill = n)) +
+  geom_tile(color = "white", linewidth = 0.5) +
+  
+  # Add the labels
+  geom_text(aes(label = label_text), color = "black", size = 4) +
+  
+  # Color scale
+  scale_fill_gradient(low = "#f7fbff", high = "#084594", name = "User Count") +
+  
+  labs(
+    title = "Comparison: Subscription Type vs. Device Type",
+    subtitle = "Percentages represent the share of the ENTIRE user base",
+    x = "Subscription Type",
+    y = "Device Type"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+```
+
+![](README_files/figure-commonmark/unnamed-chunk-20-1.png)

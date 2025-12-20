@@ -672,3 +672,37 @@ The analysis begins with a baseline logistic regression model designed to estima
 The absence of statistically significant predictors across both models suggests that Spotify user churn in this dataset behaves stochastically, meaning it cannot be systematically explained by observed behavioral or demographic variables. The small coefficient magnitudes and high p-values imply that listening patterns (such as skip frequency or total playtime) and user characteristics (such as age or gender) have minimal predictive power for churn.
 
 These results parallel what would occur in a Difference-in-Differences framework when treatment effects disappear after controlling for unobserved heterogeneity: once user-specific factors and general trends are accounted for, the apparent associations between engagement and churn lose significance. Consequently, the findings emphasize the need for richer data sources such as satisfaction surveys, app performance metrics, or pricing sensitivity  to better capture the true drivers of user disengagement.
+
+## ETC
+
+subscription_type vs device_type
+
+```{r}
+# 1. Prepare the comparison data (Overall Percentage)
+compare_subscription_device_type <- data |>
+  count(subscription_type, device_type) |>
+  mutate(
+    percentage = n / sum(n),
+    # Create label: Count (Overall %)"
+    label_text = paste0(n, "\n(", percent(percentage, accuracy = 0.1), ")")
+  )
+
+# 2. Create the Heatmap
+ggplot(compare_subscription_device_type, aes(x = subscription_type, y = device_type, fill = n)) +
+  geom_tile(color = "white", linewidth = 0.5) +
+  
+  # Add the labels
+  geom_text(aes(label = label_text), color = "black", size = 4) +
+  
+  # Color scale
+  scale_fill_gradient(low = "#f7fbff", high = "#084594", name = "User Count") +
+  
+  labs(
+    title = "Comparison: Subscription Type vs. Device Type",
+    subtitle = "Percentages represent the share of the ENTIRE user base",
+    x = "Subscription Type",
+    y = "Device Type"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+```
