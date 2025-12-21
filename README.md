@@ -34,6 +34,8 @@
     Regression and Extended Model
     Results](#baseline-logistic-regression-and-extended-model-results)
 - [<span class="toc-section-number">6</span> ETC](#etc)
+  - [<span class="toc-section-number">6.1</span>
+    Prediction](#prediction)
 
 **Programming for Business Analytics (PBA) – Graduate**
 
@@ -453,6 +455,23 @@ library(sf)
 library(rnaturalearth)
 library(stringr)
 library(scales)
+library(tidyverse)
+```
+
+    ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ✔ forcats   1.0.0     ✔ readr     2.1.5
+    ✔ lubridate 1.9.4     ✔ tibble    3.3.0
+    ✔ purrr     1.1.0     ✔ tidyr     1.3.1
+
+    ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ✖ readr::col_factor() masks scales::col_factor()
+    ✖ purrr::discard()    masks scales::discard()
+    ✖ dplyr::filter()     masks stats::filter()
+    ✖ dplyr::lag()        masks stats::lag()
+    ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+``` r
+library(modelr)
 ```
 
 - Load data.
@@ -516,7 +535,7 @@ library(scales)
     ``` r
     fun_median_label <- function(y) {
       return(data.frame(y = median(y), 
-                        label = round(median(y), 1)))
+                        label = round(median(y), 2)))
     }
     ```
 
@@ -1165,3 +1184,402 @@ ggplot(compare_subscription_device_type, aes(x = subscription_type, y = device_t
 ```
 
 ![](README_files/figure-commonmark/unnamed-chunk-20-1.png)
+
+### Prediction
+
+#### Q5. How does device type affect listening behavior (skip rate or songs played per day)?
+
+- Summary for `skip_rate` Model
+
+``` r
+# 2. Linear Regression Models
+# Question: Does device_type affect skip_rate?
+fit_skip <- lm(skip_rate ~ device_type, data = data)
+summary(fit_skip)
+```
+
+
+    Call:
+    lm(formula = skip_rate ~ device_type, data = data)
+
+    Residuals:
+          Min        1Q    Median        3Q       Max 
+    -0.303469 -0.149093  0.000907  0.150907  0.302139 
+
+    Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+    (Intercept)        0.299093   0.003294  90.808   <2e-16 ***
+    device_typeMobile -0.001232   0.004737  -0.260    0.795    
+    device_typeWeb     0.004376   0.004726   0.926    0.354    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    Residual standard error: 0.1736 on 7997 degrees of freedom
+    Multiple R-squared:  0.0001893, Adjusted R-squared:  -6.079e-05 
+    F-statistic: 0.7569 on 2 and 7997 DF,  p-value: 0.4692
+
+- Summary for `songs_played_per_day` Model
+
+``` r
+# Question: Does device_type affect songs_played_per_day?
+fit_songs <- lm(songs_played_per_day ~ device_type, data = data)
+summary(fit_songs)
+```
+
+
+    Call:
+    lm(formula = songs_played_per_day ~ device_type, data = data)
+
+    Residuals:
+        Min      1Q  Median      3Q     Max 
+    -49.558 -24.619  -0.204  24.442  49.381 
+
+    Coefficients:
+                      Estimate Std. Error t value Pr(>|t|)    
+    (Intercept)        50.2037     0.5398  93.006   <2e-16 ***
+    device_typeMobile   0.3545     0.7764   0.457    0.648    
+    device_typeWeb     -0.5846     0.7746  -0.755    0.450    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    Residual standard error: 28.45 on 7997 degrees of freedom
+    Multiple R-squared:  0.0001817, Adjusted R-squared:  -6.835e-05 
+    F-statistic: 0.7266 on 2 and 7997 DF,  p-value: 0.4836
+
+``` r
+# 3. Generating Predictions
+# Create a grid of device types to see predicted behavior for each
+prediction_grid <- data %>%
+  data_grid(device_type) %>%
+  add_predictions(fit_skip, var = "pred_skip_rate") %>%
+  add_predictions(fit_songs, var = "pred_songs_played")
+
+print(prediction_grid)
+```
+
+    # A tibble: 3 × 3
+      device_type pred_skip_rate pred_songs_played
+      <chr>                <dbl>             <dbl>
+    1 Desktop              0.299              50.2
+    2 Mobile               0.298              50.6
+    3 Web                  0.303              49.6
+
+``` r
+# 4. Visualization (Optional but recommended in PBA 10)
+ggplot(data, aes(x = device_type, y = skip_rate)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.5) +
+
+  # Add the MEDIAN label
+  stat_summary(fun.data = fun_median_label, 
+               geom = "text", 
+               vjust = -1.0,
+               color = "black", 
+               size = 3.5) +
+  
+  labs(title = "Device Type vs. Skip Rate")
+```
+
+![](README_files/figure-commonmark/unnamed-chunk-24-1.png)
+
+##### Interpretation of Results
+
+Based on the regression outputs above:
+
+1.  **Baseline (Desktop):** The `Intercept` represents the predicted
+    value for the reference group (**Desktop**). On average, Desktop
+    users have a skip rate of $29.9\%$ and play $50.2$ songs per day.
+
+2.  **Effect of Mobile/Web:**
+
+    - The coefficient for `device_type = Mobile` ($-0.0012$ for skip
+      rate) tells us that Mobile users skip slightly less than Desktop
+      users, but the $p$-value ($0.795$) is much higher than $0.05$.
+
+    - The coefficient for `device_type = Web` ($0.0044$ for skip rate)
+      shows Web users skip slightly more, but again the $p$-value
+      ($0.354$) is not significant.
+
+3.  **Statistical Significance:** For both models, the $p$-values for
+    the device type coefficients are all greater than $0.05$.
+    Additionally, the $F$-statistic p-values ($0.469$ and $0.483$)
+    indicate that the models as a whole do not explain the variance in
+    listening behavior better than a simple mean.
+
+4.  **Model Fit (**$R^2$): The $R^2$ values are extremely low (nearly
+    $0$). This means that **device type accounts for almost** $0\%$ of
+    the variation in how many songs people play or how often they skip.
+
+##### Conclusion for Report
+
+**“How does device type affect listening behavior?”** The analysis shows
+that **device type has no statistically significant effect** on
+listening behavior. Users on Mobile, Desktop, and Web exhibit nearly
+identical skip rates and daily song counts. For prediction purposes,
+knowing a user’s device type does not provide a reliable basis for
+forecasting their engagement levels. You may want to investigate other
+moderators, such as `subscription_type`, which likely have a stronger
+impact.
+
+#### Q6. How do ads listening weekly relate to listening time and skip rate?
+
+For **Question 6: How do ads listening weekly relate to listening time
+and skip rate?**, we will use linear regression to test the strength of
+these relationships.
+
+A key observation in the data is that **ads are only played for users on
+the “Free” subscription tier** (Premium, Student, and Family plans have
+0 ads). Therefore, this analysis effectively examines how the
+*intensity* of ad exposure within the Free tier affects behavior.
+
+``` r
+# Regression: Ads vs. Listening Time
+# Null Hypothesis: Weekly ads do not affect the total minutes spent listening.
+fit_ads_time <- lm(listening_time ~ ads_listened_per_week, data = data)
+summary(fit_ads_time)
+```
+
+
+    Call:
+    lm(formula = listening_time ~ ads_listened_per_week, data = data)
+
+    Residuals:
+         Min       1Q   Median       3Q      Max 
+    -144.519  -72.971    0.029   73.029  145.029 
+
+    Coefficients:
+                           Estimate Std. Error t value Pr(>|t|)    
+    (Intercept)           153.97063    1.05447 146.018   <2e-16 ***
+    ads_listened_per_week   0.01406    0.06899   0.204    0.839    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    Residual standard error: 84.02 on 7998 degrees of freedom
+    Multiple R-squared:  5.193e-06, Adjusted R-squared:  -0.0001198 
+    F-statistic: 0.04153 on 1 and 7998 DF,  p-value: 0.8385
+
+##### Regression 1: Ads vs. Listening Time
+
+- **Coefficient (Estimate):** $0.0141$
+
+- $p$-value: $0.839$
+
+- **Interpretation:** The $p$-value is much larger than $0.05$. This
+  means there is **no statistically significant relationship** between
+  the number of ads a user hears and their total listening time. Hearing
+  more ads does not appear to discourage users from listening to music
+  on the platform.
+
+``` r
+# Regression: Ads vs. Skip Rate
+# Null Hypothesis: Weekly ads do not affect the likelihood of skipping songs.
+fit_ads_skip <- lm(skip_rate ~ ads_listened_per_week, data = data)
+summary(fit_ads_skip)
+```
+
+
+    Call:
+    lm(formula = skip_rate ~ ads_listened_per_week, data = data)
+
+    Residuals:
+         Min       1Q   Median       3Q      Max 
+    -0.30125 -0.15125 -0.00125  0.14875  0.30635 
+
+    Coefficients:
+                            Estimate Std. Error t value Pr(>|t|)    
+    (Intercept)            0.3012500  0.0021786 138.278   <2e-16 ***
+    ads_listened_per_week -0.0001617  0.0001425  -1.134    0.257    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    Residual standard error: 0.1736 on 7998 degrees of freedom
+    Multiple R-squared:  0.0001608, Adjusted R-squared:  3.581e-05 
+    F-statistic: 1.286 on 1 and 7998 DF,  p-value: 0.2567
+
+##### Regression 2: Ads vs. Skip Rate
+
+- **Coefficient (Estimate):** $-0.00016$
+
+- $p$-value: $0.257$
+
+- **Interpretation:** The $p$-value is also greater than $0.05$. This
+  suggests that the number of ads listened to does not significantly
+  impact a user’s skip rate. Users do not seem to become “more
+  frustrated” and skip more songs just because they have been exposed to
+  more advertisements.
+
+``` r
+# Visualizing the relationships
+# We use a scatter plot with a regression line (method = "lm")
+ggplot(data, aes(x = ads_listened_per_week, y = listening_time)) +
+  geom_jitter(alpha = 0.2, color = "gray") + # Jitter to handle overlapping points
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Relationship: Weekly Ads vs. Total Listening Time",
+       x = "Ads Listened Per Week",
+       y = "Listening Time (Minutes)")
+```
+
+    `geom_smooth()` using formula = 'y ~ x'
+
+![](README_files/figure-commonmark/unnamed-chunk-27-1.png)
+
+``` r
+ggplot(data, aes(x = ads_listened_per_week, y = skip_rate)) +
+  geom_jitter(alpha = 0.2, color = "gray") +
+  geom_smooth(method = "lm", color = "blue") +
+  labs(title = "Relationship: Weekly Ads vs. Skip Rate",
+       x = "Ads Listened Per Week",
+       y = "Skip Rate (%)")
+```
+
+    `geom_smooth()` using formula = 'y ~ x'
+
+![](README_files/figure-commonmark/unnamed-chunk-28-1.png)
+
+##### Final Conclusion for Report
+
+**“How do ads listening weekly relate to listening time and skip
+rate?”**
+
+The data indicates that there is **no significant correlation** between
+weekly ad exposure and the measured engagement metrics.
+
+1.  **No Ad Fatigue:** An increase in ads listened per week does not
+    result in a decrease in total listening time ($p = 0.839$).
+
+2.  **No Frustration Skips:** An increase in ads does not lead to a
+    higher skip rate ($p = 0.257$).
+
+**Contextual Note:** Since ads are exclusively present in the **Free
+tier**, we can conclude that among Free users, those who are more
+heavily exposed to ads (perhaps due to longer sessions) do not change
+their fundamental listening habits compared to those exposed to fewer
+ads. The platform’s ad-supported model appears to be well-tolerated by
+its current user base in terms of these specific behaviors.
+
+#### Q7. Which user characteristics increase the likelihood of upgrading to Premium?
+
+For **Question 7: Which user characteristics increase the likelihood of
+upgrading to Premium?**, we use **Logistic Regression**. This is the
+appropriate statistical method for modeling binary outcomes (e.g.,
+whether a user is “Premium” or not).
+
+##### 1. R Code for Logistic Regression
+
+We will create a binary variable `is_premium` and see how demographics
+like **Age**, **Gender**, and **Country** impact the probability of a
+user having that status.
+
+``` r
+# Create a binary indicator: 1 if Premium, 0 otherwise
+data <- data |>
+  mutate(is_premium = if_else(subscription_type == "Premium", 1, 0))
+
+# 2. Logistic Regression Model (GLM)
+# We model the likelihood of being Premium based on user characteristics
+fit_premium <- glm(is_premium ~ age + gender + country + device_type, 
+                   data = data, 
+                   family = binomial(link = "logit"))
+
+# 3. View Results
+summary(fit_premium)
+```
+
+
+    Call:
+    glm(formula = is_premium ~ age + gender + country + device_type, 
+        family = binomial(link = "logit"), data = data)
+
+    Coefficients:
+                        Estimate Std. Error z value Pr(>|z|)    
+    (Intercept)       -1.0024403  0.1139925  -8.794   <2e-16 ***
+    age               -0.0007668  0.0019922  -0.385    0.700    
+    genderMale         0.0279999  0.0619746   0.452    0.651    
+    genderOther       -0.0192628  0.0625527  -0.308    0.758    
+    countryCA         -0.0797578  0.1034373  -0.771    0.441    
+    countryDE         -0.0629680  0.1015688  -0.620    0.535    
+    countryFR          0.0860677  0.1003903   0.857    0.391    
+    countryGB          0.1585898  0.1002025   1.583    0.113    
+    countryIN          0.1097821  0.0996279   1.102    0.270    
+    countryPK         -0.1321233  0.1029890  -1.283    0.200    
+    countryUS          0.0761087  0.0994550   0.765    0.444    
+    device_typeMobile -0.0318375  0.0620040  -0.513    0.608    
+    device_typeWeb    -0.0200393  0.0617252  -0.325    0.745    
+    ---
+    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    (Dispersion parameter for binomial family taken to be 1)
+
+        Null deviance: 9241.3  on 7999  degrees of freedom
+    Residual deviance: 9225.9  on 7987  degrees of freedom
+    AIC: 9251.9
+
+    Number of Fisher Scoring iterations: 4
+
+``` r
+# 4. Calculate Odds Ratios for easier interpretation
+# (Exp of coefficients gives the factor change in odds)
+exp(coef(fit_premium))
+```
+
+          (Intercept)               age        genderMale       genderOther 
+            0.3669828         0.9992335         1.0283955         0.9809215 
+            countryCA         countryDE         countryFR         countryGB 
+            0.9233400         0.9389736         1.0898801         1.1718572 
+            countryIN         countryPK         countryUS device_typeMobile 
+            1.1160348         0.8762329         1.0790798         0.9686639 
+       device_typeWeb 
+            0.9801602 
+
+##### 2. Analysis of Results
+
+Based on the regression output (simulated from the dataset):
+
+- **Age:** The coefficient for `age` is approximately $-0.0008$ with a
+  $p$-value of $0.70$. Since $p > 0.05$, **age does not significantly
+  affect** the likelihood of a user being on the Premium tier.
+
+- **Gender:** Comparing “Male” and “Other” to the baseline (“Female”),
+  the $p$-values ($0.65$ and $0.75$) are both high. This indicates that
+  **gender is not a predictor** for Premium subscriptions in this
+  dataset.
+
+- **Country:** While there are minor variations (e.g., users in the UK
+  have a slightly higher coefficient of $0.15$), none of the
+  country-specific $p$-values reach the $0.05$ significance threshold.
+
+- **Device Type:** Similarly, whether a user uses Mobile, Web, or
+  Desktop does not significantly change their probability of being a
+  Premium subscriber.
+
+**Model Fit Metrics:**
+
+- **Pseudo R-squared:** The value is very low (~0.001), indicating that
+  demographic characteristics explain very little of why a user chooses
+  to go Premium.
+
+- **LLR p-value:** $0.216$. Since this is greater than $0.05$, the model
+  as a whole is not a significantly better predictor than just guessing
+  the average proportion of Premium users.
+
+##### 3. Interpretation and Conclusion for Report
+
+**“Which user characteristics increase the likelihood of upgrading to
+Premium?”**
+
+The statistical analysis reveals that **none of the measured user
+characteristics (Age, Gender, Country, or Device Type) significantly
+increase the likelihood of a user being in the Premium tier.** \*
+**Interpretation:** The decision to upgrade to Premium appears to be
+independent of the user’s demographic profile. This suggests that
+Spotify’s Premium value proposition appeals equally across different
+ages, genders, and regions.
+
+- **Business Recommendation:** Since demographics don’t predict
+  upgrades, the marketing team should focus on **behavioral triggers**
+  (such as high usage levels or frequent ad exposure) rather than
+  demographic targeting to drive Premium conversions.
+
+- **Methodology Note:** In the R output, the lack of significant stars
+  (`*`) next to the variables confirms that we cannot reject the null
+  hypothesis that these characteristics have no effect on subscription
+  choice.
