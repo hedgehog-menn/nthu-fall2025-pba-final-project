@@ -1,47 +1,40 @@
 ---
-title: "Programming for Business Analytics (PBA) – Final Project"
-author:
-  - "**Group 7**"
-  - "(Fern) Wachiraporn Tianchot -	112550081"
-  - "(Ken) Kanokphan Thananchai - 112065431"
-format:
-  gfm:
-    toc: true
+title: "Final Project Data and Proposal"
+number-sections: true
+toc: true
+format: gfm
 editor: visual
 ---
 
-## Part 1: Data and Proposal
+**Programming for Business Analytics (PBA) – Graduate**
 
-### Data resource
+*Fall 2025*
 
--   [\[Kaggle\] Spotify Analysis Dataset 2025](https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis)
+**Group 7**
 
-### Proposal
+1.  Wachiraporn Tianchot - 112550081
 
-We will analyze Spotify dataset with user-level behavior (listening time, skips), plan type (Free/Premium), ads exposure, devices, demographics, and a churn flag. This lets us explore engagement patterns and illustrate churn/upgrade dynamics in a transparent, visual way.
+2.  Kanokphan Thananchai - 112065431
 
-### Purpose
+**Data resource:** [\[Kaggle\] Spotify Analysis Dataset 2025](https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis)
 
-Explain who is active, who is likely to churn, and who is likely to upgrade to Premium then translate those insights into simple, testable actions (upsell targeting, ad-light trials, playlist nudges) to improve retention and conversion.
+## Introduction
 
-### Variables
+In today’s competitive music streaming landscape, understanding user behavior is essential for sustaining engagement and driving growth. Our project leverages the Spotify Analysis Dataset 2025, which contains detailed user-level data, including listening time, skip rates, plan types (Free or Premium), ad exposure, device usage, demographic information, and a churn flag.
 
-| Variable                | Detail                                    |
-|-------------------------|-------------------------------------------|
-| `user_id`               | Unique identifier for each user           |
-| `gender`                | Male/Female/Other                         |
-| `age`                   | User age                                  |
-| `country`               | User Location                             |
-| `subscription_type`     | Free, Premium, Family, Student            |
-| `listening_time`        | Minutes spent listening per day           |
-| `songs_played_per_day`  | Number of songs played daily              |
-| `skip_rate`             | Percentage of songs skipped               |
-| `device_type`           | Device used (Mobile, Desktop, Web)        |
-| `ads_listened_per_week` | Number of ads heard per week              |
-| `offline_listening`     | Offline mode usage                        |
-| `is_churned`            | Target variable (0 = Active, 1 = Churned) |
+By examining these variables, we aim to uncover key engagement patterns that explain who remains active, who is at risk of churning, and who shows potential to upgrade to Premium. Through this analysis, we will visualize churn and upgrade dynamics in a clear, data-driven way. The ultimate goal is to translate these insights into simple, actionable strategies such as targeted upsell campaigns, ad-light trial offers, and personalized playlist nudges to improve user retention and conversion.
 
-### Questions
+## Research Design
+
+This study investigates user behavior patterns on Spotify using the Spotify Analysis Dataset 2025. We aim to explore how demographic, behavioral, and usage-related factors relate to engagement, churn, and upgrade behavior among users across different countries. We will apply descriptive statistics, correlation analysis, and predictive modeling techniques. These methods allow us to quantify user engagement, identify churn risk factors, and uncover potential drivers of Premium subscription upgrades. The analysis will be complemented with visualizations to make user patterns and behavioral insights more interpretable for decision-making and marketing applications.
+
+### Identification Strategy
+
+Our main identification strategy is based on analyzing user-level behavioral patterns within the Spotify Analysis Dataset 2025. We identify relationships and potential causal pathways between user characteristics (age, gender, plan type, device, ad exposure) and behavioral outcomes such as listening activity, churn, and Premium upgrades.
+
+To estimate these effects, we employ a combination of descriptive analytics, regression modeling, and machine learning–based causal inference techniques. First, we use exploratory data analysis (EDA) and correlation visualization to identify broad engagement trends across countries, age groups, and genders. Then, to understand drivers of churn and upgrade behavior, we use predictive modeling approaches, such as logistic regression which capture both linear and nonlinear effects.
+
+**Questions:**
 
 1.  Which countries have the most active Spotify users?
 
@@ -57,11 +50,188 @@ Explain who is active, who is likely to churn, and who is likely to upgrade to P
 
 7.  Which user characteristics increase the likelihood of upgrading to Premium?
 
+### Treatment and Outcome Variables
+
+In this study, the treatment variables represent user characteristics and engagement factors that may influence churn and upgrade behavior on Spotify. These variables are defined at the user level and include:
+
+-   **plan_type**: 1 if the user is a Premium subscriber, 0 if Free.
+
+-   **ads_exposure**: the number of ads listened to per week.
+
+-   **device_type**: categorized as mobile, desktop, or web.
+
+-   **listening_time**: total minutes of music played per week.
+
+-   **skip_rate**: the proportion of skipped songs relative to total songs played.
+
+-   **demographics**: age group and gender.
+
+To capture user engagement dynamics, we construct interaction terms where relevant (device_type × plan_type) to examine how usage context may moderate listening behavior or churn probability.
+
+The **outcome variable** of primary interest is **user churn**, defined as a binary indicator:
+
+$$
+  Churn =
+  \begin{cases}
+    1 & \text{if the user stops using Spotify within a defined period}\\
+    0 & \text{if the user remains active}\\
+  \end{cases}
+$$
+
+For extended analysis, a secondary outcome variable **upgrade probability** is also introduced, representing whether a Free user upgrades to Premium during the observation period:
+
+$$
+  Upgrade =
+  \begin{cases}
+    1 & \text{if a Free user upgrades to Premium}\\
+    0 & \text{otherwise}\\
+  \end{cases}
+$$
+
+These outcome variables allow us to investigate how engagement factors (listening time, skip rate, ad exposure, device type, and demographics) influence user retention and conversion behavior. The relationship between these predictors and churn or upgrade probability will be estimated through regression and machine learning models, providing interpretable insights into what drives user loyalty and monetization on Spotify.
+
+### Covariates and Moderators
+
+To ensure that the estimated relationships between user behavior and churn or upgrade outcomes are not driven by confounding factors, we include several user-level and country-level covariates in the analysis. User-level covariates capture individual usage and demographic characteristics that may influence engagement and retention:
+
+-   **age:** user’s age or age group.
+
+-   **gender:** male, female, or other.
+
+-   **listening_time:** total minutes of music streamed per week.
+
+-   **songs_played_per_day:** daily listening activity measure.
+
+-   **skip_rate: proportion of skipped songs relative to total plays.**
+
+-   **ads_exposure:** number of ads heard per week.
+
+-   **device_type:** categorized as mobile, desktop, Web.
+
+To explore **heterogeneous effects**, two moderators are included:
+
+-   **plan_type**: 1 if Premium, 0 if Free to test whether behavioral drivers differ between paid and free users.
+
+-   **device_category**: 1 if mobile, 0 if non-mobile to assess how listening context influences churn and engagement.
+
+## Data
+
+This study uses the Spotify Analysis Dataset 2025, which contains user-level behavioral and demographic information collected from Spotify’s global streaming platform. The dataset includes detailed variables on listening activity, subscription type, ad exposure, device usage, and churn status, enabling a comprehensive analysis of engagement and conversion patterns.
+
+### Data Sources
+
+The data used in this study are derived from the Spotify Analysis Dataset 2025, which consolidates multiple user-level data components from Spotify’s global platform. The dataset provides detailed behavioral, demographic, and subscription-related information for users across various countries.
+
+-   **User-level data:** Includes individual characteristics such as age, gender, country, and subscription plan (Free or Premium). Behavioral metrics such as total listening time, skip rate, number of songs played per day, and ad exposure are also included.
+
+-   **Device data:** Captures the primary listening device type (mobile, desktop, or Web), which allows for the analysis of engagement differences across devices.
+
+-   **Churn and upgrade information:** Indicates whether a user discontinued Spotify usage (churned) or upgraded from a Free to Premium plan during the observation period.
+
+The dataset represents a **cross-sectional sample of users globally in 2025**, capturing variations in usage behavior, demographics, and engagement outcomes. This structure enables comparative analysis of user activity, churn, and upgrade tendencies across diverse geographic and demographic segments.
+
+### Sample Construction
+
+The analytical sample was constructed from the Spotify Analysis Dataset 2025, which contains global user-level data covering listening behavior, demographics, and subscription status. The dataset includes a cross-section of 8,000 users from eight countries: Australia, the United States, Germany, France, India, Pakistan, the United Kingdom, and Canada. Each observation represents an individual Spotify user with complete behavioral and demographic attributes.
+
+Each user serves as one observation, with **churn (1 = churned, 0 = active)** defined as the primary outcome variable. A binary variable for **subscription type** (1 = paid plan, 0 = free plan) was also created to enable comparison between premium and free users.
+
+This construction allows both descriptive and predictive analysis of user engagement and retention. The behavioral sample was further used to estimate churn probability via logistic regression models, linking variables such as skip rate, listening time, and songs played per day to churn outcomes.
+
+### Key Variables
+
+-   `user_id` -\> Unique identifier for each user
+-   `gender` -\> Male/Female/Other
+-   `age` -\> User age
+-   `country` -\> User Location
+-   `subscription_type` -\> Free, Premium, Family, Student
+-   `listening_time` -\> Minutes spent listening per day
+-   `songs_played_per_day` -\> Number of songs played daily
+-   `skip_rate` -\> Percentage of songs skipped
+-   `device_type` -\> Device used (Mobile, Desktop, Web)
+-   `ads_listened_per_week` -\> Number of ads heard per week
+-   `offline_listening` -\> Offline mode usage
+-   `is_churned` -\> Target variable (0 = Active, 1 = Churned)
+
+## Methodology
+
+This study adopts a multi-method analytical framework to explore factors influencing user engagement, churn, and subscription upgrades on Spotify. The analysis integrates both descriptive analytics and predictive modeling to identify behavioral patterns and assess potential determinants of user retention.
+
+**1. Descriptive Analysis**
+
+The first stage involves Exploratory Data Analysis (EDA) to visualize user behavior across demographic and usage dimensions. Metrics such as listening time, skip rate, and songs played per day are examined across different countries, age groups, genders, and device types. The goal is to identify patterns of engagement and detect potential behavioral differences between Free and Premium users.
+
+**2. Correlation Analysis**
+
+Correlation matrices and comparative plots are used to examine the relationships between key variables, such as listening time and skip rate, or ad exposure and engagement. These analyses help uncover which user attributes are most associated with listening activity or disengagement.
+
+**3. Logistic Regression**
+
+To test whether user behavior predicts churn, a logistic regression model is employed, where the dependent variable is is_churned (1 = churned, 0 = active). Independent variables include skip_rate, songs_played_per_day, listening_time, and subscription_binary (1 = paid, 0 = free).
+
+### Baseline Logistic Regression and Extended Models
+
+The baseline analytical model begins with a simple logistic regression to examine whether users’ listening behavior can explain their likelihood of churn. In this specification, the dependent variable is a binary churn indicator (is_churned = 1 if the user stopped using Spotify, 0 otherwise). The key explanatory variables include individual engagement metrics skip_rate, songs_played_per_day, listening_time, and subscription_binary (1 = Paid plan, 0 = Free plan):
+
+``` math
+(P(Churn_i = 1)) = \alpha + \beta_1 (skip\_rate_i) + \beta_2 (songs\_played\_per\_day_i)+ \beta_3 (listening\_time_i) + \beta_4 (subscription\_binary_i)
+```
+
+This baseline model does not include control variables or group-level fixed effects, it captures the raw behavioral association between engagement activity and churn probability.
+
+To improve explanatory power and control for heterogeneity, extended model versions were estimated by incorporating demographic and geographic covariates, including age, gender, and country, along with the subscription variable. These additions help control for user-specific characteristics and regional market effects that could influence engagement or retention.
+
+$$
+(P(Churn_i = 1​) = \alpha + \beta X_i ​+ \gamma D_i​ + \epsilon_i
+$$
+
+where $X_i$ represents behavioral variables and $D_i$ denotes demographic controls.
+
+The results reveal that neither behavioral nor demographic variables significantly predict churn, implying that Spotify user attrition in this dataset appears random rather than systematically driven by observable engagement metrics. Consequently, this section’s model establishes the foundation for identifying the limits of behavioral prediction in churn modeling and highlights the need for richer data sources such as sentiment or app-experience measures in future analyses.
+
+### Logistic Regression with Moderators
+
+To test for behavioral heterogeneity and identify whether the relationship between engagement and churn differs across user subgroups, the analysis incorporates interaction terms (moderators) into the logistic regression framework. Two key moderators are examined:
+
+-   **Plan Type:** whether the user is on a Free or Paid (Premium/Family/Student) subscription.
+
+-   **Device Type:** whether the user primarily listens on a mobile device or a non-mobile platform (desktop/web).
+
+These moderators are introduced to assess whether the effects of engagement metrics such as skip rate, listening time, and songs played per day vary by subscription status or listening environment. The extended model is expressed as:
+
+$$
+logit(Churn_i​) = \alpha + \beta_1 X_i ​+ \beta_2 X_i ​+ \beta_3​ (X_i\times M_i) + \gamma Z_i ​+ \epsilon_i
+$$
+
+-   $X_i$ represents user engagement variables (skip_rate, listening_time),
+
+-   $M_i$ is the moderator (plan_type or device_type)
+
+-   $X_i\times M_i$ is the interaction term capturing moderation effects
+
+-   $Z_i$​ includes control variables such as age, gender, and country.
+
+The coefficient on the interaction term ($\beta_3$​) measures whether the influence of user engagement differs by subscription or device category.
+
+### Matching
+
+To improve the comparability between user subgroups (Free vs. Paid users) and reduce potential bias in model estimation, nearest neighbor matching was applied based on user-level covariates. This approach ensures that users being compared in subsequent analyses are similar in terms of their demographic and behavioral characteristics, allowing for a more balanced assessment of engagement and churn outcomes.
+
+Matching was performed using variables such as age, gender, country, listening_time, songs_played_per_day, skip_rate, and ads_listened_per_week. By matching users with similar behavioral profiles across different subscription plans, we aimed to isolate the effect of subscription type or engagement pattern on churn probability.
+
+## Result
+
+This section presents the results of the analyses examining the relationship between user behavior and churn on Spotify. The findings are derived from multiple analytical approaches, including descriptive analysis, logistic regression, and machine learning–based models. These methods collectively aim to identify whether listening behavior, demographic characteristics, or subscription type meaningfully predict user churn or engagement outcomes.
+
+### Descriptive Insights
+
+Initial exploratory analysis revealed consistent engagement patterns across users. Listening time, skip rate, and songs played per day were similar across age groups, genders, subscription plans, and device types. For example, the median daily listening time ranged narrowly between approximately 150 and 161 minutes across age groups, indicating that users, regardless of demographic background, spend a comparable amount of time on the platform. Similarly, skip rates clustered around 30 percent across all subscription types, suggesting that the tendency to skip songs is not strongly influenced by whether users are on Free, Premium, Family, or Student plans.
+
+Insights from the data visualizations further reinforce the conclusion that engagement behavior is largely stable across usage contexts. Boxplots comparing listening time and songs played per day across device types show nearly identical medians for desktop, mobile, and web users, with substantial variation occurring within each group rather than between groups. This pattern indicates that individual listening habits dominate engagement behavior, while demographic characteristics and access context play a secondary role.
+
 ------------------------------------------------------------------------
 
-## Part 2: Data Visualization & Part 3: Data Analysis
-
-### Set Up the Environment
+**Set Up the Environment**
 
 -   Load the libraries.
 
@@ -72,6 +242,8 @@ library(sf)
 library(rnaturalearth)
 library(stringr)
 library(scales)
+library(tidyverse)
+library(modelr)
 ```
 
 -   Load data.
@@ -98,8 +270,8 @@ library(scales)
 
         ```{r}
         fun_median_label <- function(y) {
-          return(data.frame(y = median(y), 
-                            label = round(median(y), 1)))
+          return(data.frame(y = median(y),
+                            label = round(median(y), 2)))
         }
         ```
 
@@ -107,41 +279,38 @@ library(scales)
 
         ```{r}
         fun_n_label <- function(y) {
-          return(data.frame(y = median(y), 
+          return(data.frame(y = median(y),
                             label = paste0("n = ", length(y))))
         }
         ```
 
-### Visualization No.1
-
-**Figure 1:** Distribution of Users by Country
-
-Let's find out of all countries there are in the dataset and the number of Spotify users each country.
-
-::: callout-note
-In the upcoming visualization, it requires to use a ISO country code which make us to need to change the country code UK to [GB for the United Kingdom](https://www.iso.org/obp/ui/#iso:code:3166:GBhttps://www.iso.org/obp/ui/#iso:code:3166:GB)
-:::
+------------------------------------------------------------------------
 
 ```{r}
-data <- data %>%
+# In the upcoming visualization, it requires to use a ISO country code
+# which make us to need to change the country code UK to GB for the United Kingdom
+
+data <- data |>
   mutate(country = case_when(
     country == "UK" ~ "GB",  # When country is "UK", change it to "GB"
     TRUE ~ country           # Otherwise (TRUE), keep the original code
   ))
 
-country_counts <- data %>%
+country_counts <- data |>
   count(country, name = "user_count")
 
-print(country_counts)
+country_counts |> knitr::kable()
 ```
 
-Visualize the data on a world map.
+::: {style="text-align: center;"}
+***Table 1:** Active Spotify users by country*
+:::
 
 ```{r}
 world_map <- ne_countries(scale = "medium", returnclass = "sf")
 
 # Join our country code with the iso map data
-world_map_with_data <- world_map %>%
+world_map_with_data <- world_map |>
   left_join(country_counts, by = c("iso_a2_eh" = "country"))
 
 # Create the map visualization
@@ -157,47 +326,38 @@ ggplot(data = world_map_with_data) +
   theme(legend.position = "bottom")
 ```
 
-The data show that Australia (1034) and the United States (1032) have the highest numbers of active Spotify users, with a little over 1,030 users each. They are followed closely by Germany (1015) and India (1011), both slightly above 1,000 users. Countries such as Pakistan (999), France (989), United Kingdom (966), and Canada (954) have slightly fewer active users, ranging from the mid-900s to just under 1,000. Overall, the differences across countries are small, but AU and US lead the group.
+::: {style="text-align: center;"}
+***Figure 1:** Distribution of Users by Country*
+:::
 
-### Visualization No.2
-
-**Figure 2:** User by Country and Subscription Type
-
-Set Up the related variables.
-
--   Count users by country AND subscription type.
+The data show that Australia (1034) and the United States (1032) have the highest numbers of active Spotify users, with a little over 1,030 users each. They are followed closely by Germany (1015) and India (1011), both slightly above 1,000 users. Countries such as Pakistan (999), France (989), United Kingdom (966), and Canada (954) have slightly fewer active users, ranging from the mid-900s to just under 1,000. Overall, the differences across countries are small, but AU and US lead the group.Visualization No.2
 
 ```{r}
-country_sub_counts <- data %>%
+# Count users by country AND subscription type.
+country_sub_counts <- data |>
   count(country, subscription_type, name = "user_count")
 ```
 
--   Calculate total users per country.
-
 ```{r}
-country_totals <- country_sub_counts %>%
-  group_by(country) %>%
+# Calculate total users per country.
+country_totals <- country_sub_counts |>
+  group_by(country) |>
   summarise(total_users = sum(user_count))
-```
 
--   Prepare data for the stacked segments.
-
-```{r}
-plot_data <- country_sub_counts %>%
-  left_join(country_totals, by = "country") %>%
+# Prepare data for the stacked segments.
+plot_data <- country_sub_counts |>
+  left_join(country_totals, by = "country") |>
   mutate(
     percentage = user_count / total_users,
     label_text = paste0(user_count, "\n(", percent(percentage, accuracy = 0.1), ")")
   )
 ```
 
-Create the stacked bar chart
-
 ```{r}
 ggplot(
   plot_data,
-  aes(x = reorder(country, -total_users), 
-      y = user_count, 
+  aes(x = reorder(country, -total_users),
+      y = user_count,
       fill = subscription_type)
   ) +
 
@@ -206,17 +366,17 @@ ggplot(
 
   # Layer 2: The internal labels (count + percentage)
   geom_text(
-    aes(label = label_text), 
+    aes(label = label_text),
     position = position_stack(vjust = 0.5),
-    color = "black", 
+    color = "black",
     size = 3
   ) +
-  
+
   # Layer 3: The total count label on top of each bar
   geom_text(
     data = country_totals,
     aes(x = reorder(country, -total_users),
-        y = total_users, 
+        y = total_users,
         label = total_users),
     inherit.aes = FALSE,
     vjust = -0.5,
@@ -235,48 +395,43 @@ ggplot(
   ylim(0, max(country_totals$total_users) * 1.05)
 ```
 
+::: {style="text-align: center;"}
+***Figure 2:** User by Country and Subscription Type*
+:::
+
 Based on the subscription-type bar chart, the United States (284), United Kingdom (282), and France (274) have the highest number of Premium users, shown by the larger dark-blue sections in their bars. In contrast, Pakistan (265) and India (255) have the largest number of Free users, with noticeably bigger orange sections. The US appears high in both Premium and Free users because of its overall higher activity. Some countries like Germany and Australia have a more balanced mix across Premium, Free, Family, and Student plans.
 
-### Visualization No.3
-
-**Figure 3:** Listening Time Across Age Groups
-
-Set Up the related variable - Create the age groups
-
 ```{r}
-data_with_age_groups <- data %>%
+# Set Up the related variable - Create the age groups
+data_with_age_groups <- data |>
   mutate(
-    age_group = cut(age, 
-                    # We define the "breaks" for each group
+    age_group = cut(age,
                     breaks = c(0, 19, 29, 39, 49, 59, Inf),
-                    # And give those groups names
                     labels = c("Under 20", "20-29", "30-39", "40-49", "50-59", "60+"),
                     right = TRUE)
   )
 ```
 
-Create the box plot
-
 ```{r}
-ggplot(data_with_age_groups, 
+ggplot(data_with_age_groups,
        aes(x = age_group, y = listening_time, fill = age_group)) +
 
   geom_boxplot() +
 
   # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -1.0,
-               color = "black", 
+               color = "black",
                size = 3.5) +
-  
+
   # Add the COUNT label
-  stat_summary(fun.data = fun_n_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_n_label,
+               geom = "text",
                vjust = 1.8,
                color = "black",
                size = 3.5) +
-  
+
   guides(fill = "none") +
   labs(
     title = "Listening Time Across Age Groups",
@@ -286,31 +441,31 @@ ggplot(data_with_age_groups,
   theme_minimal()
 ```
 
+::: {style="text-align: center;"}
+***Figure 3:** Listening Time Across Age Groups*
+:::
+
 Listening time is quite similar across all age groups, with median values ranging from about 150 to 161 minutes per day. The 20–29 age group listens the most on average, while the 30–39 and 50–59 groups listen slightly less, but the differences are small. Overall, every age group listens for roughly 2 to 2.5 hours per day, showing that age does not strongly change listening behavior. Gender patterns (based on typical Spotify usage) usually show only small differences, with men often listening slightly longer and playing more songs, but the variation is not large. In general, both listening time and songs played per day remain fairly consistent across age groups and genders, suggesting similar engagement levels across different demographic groups.
 
-### Visualization No.4
-
-**Figure 4:** Skip Rate Distribution by Subscription Type
-
-```{r}
-ggplot(data, 
+```{r, fig.align='center'}
+ggplot(data,
        aes(x = subscription_type, y = skip_rate, fill = subscription_type)) +
   geom_boxplot() +
-  
+
   # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -0.7,
-               color = "black", 
+               color = "black",
                size = 4) +
-  
+
   # Add the COUNT label
-  stat_summary(fun.data = fun_n_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_n_label,
+               geom = "text",
                vjust = 1.8,
                color = "black",
                size = 4) +
-  
+
   guides(fill = "none") +
   labs(
     title = "Skip Rate Distribution by Subscription Type",
@@ -320,29 +475,33 @@ ggplot(data,
   theme_minimal()
 ```
 
-### Visualization No.5
+::: {style="text-align: center;"}
+***Figure 4:** Skip Rate Distribution by Subscription Type*
+:::
 
-**Figure 5:** Listening Time by Device Type
+The skip rate is almost identical across all subscription types, with each group showing a median of around 0.3 or 30% This indicates that subscription type does not influence how often users skip songs. All groups Family, Free, Premium, and Student display nearly the same central behavior when it comes to skipping tracks. However, the boxplot shows a wide spread in each subscription group. This means that while the average skipping behavior is the same, individual differences are large. Some users rarely skip songs, while others skip nearly half of the tracks they play. This suggests that skip rate is driven by personal listening habits, not by whether someone is a Free or Premium user.
 
-```{r}
-ggplot(data, 
+From a behavioral perspective, a high skip rate often reflects mismatched music recommendations, which can lead to frustration or dissatisfaction. This makes skip rate a meaningful predictor for churn not because subscription types differ, but because high skip-rate users exist in every subscription category. Users who frequently skip songs are more likely to be unhappy with their listening experience, increasing the likelihood of churn regardless of whether they are Free, Premium, Family, or Student. In other words, even a Premium user with a skip rate of 45 percent may still be at high churn risk if they consistently feel the recommendations do not match their preferences.
+
+```{r, fig.align='center'}
+ggplot(data,
        aes(x = device_type, y = listening_time, fill = device_type)) +
   geom_boxplot() +
-  
+
   # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -1.0,
-               color = "black", 
+               color = "black",
                size = 4) +
-  
+
   # Add the COUNT label
-  stat_summary(fun.data = fun_n_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_n_label,
+               geom = "text",
                vjust = 1.8,
                color = "black",
                size = 4) +
-  
+
   guides(fill = "none") +
   labs(
     title = "Listening Time by Device Type",
@@ -351,6 +510,10 @@ ggplot(data,
   ) +
   theme_minimal()
 ```
+
+::: {style="text-align: center;"}
+***Figure 5:** Listening Time by Device Type*
+:::
 
 The median listening times across device types are very similar:
 
@@ -370,7 +533,7 @@ This pattern matches what we observed in the previous Skip Rate by Subscription 
 
 Together, these plots show that: Some users listen a lot, others very little regardless of device.\
 Some users skip frequently, others almost never regardless of subscription type.\
-	In other words, these behaviors depend more on individual preferences than on product tier. Being a Premium or Free user does not predict skip rate, and using Mobile or Desktop does not predict listening time. 
+In other words, these behaviors depend more on individual preferences than on product tier. Being a Premium or Free user does not predict skip rate, and using Mobile or Desktop does not predict listening time.
 
 However, certain behavioral patterns remain important for understanding churn:
 
@@ -380,30 +543,25 @@ However, certain behavioral patterns remain important for understanding churn:
 
 Thus, although subscription type and device type do not explain much variation, individual listening patterns are still crucial predictors for churn.
 
-### Visualization No.6
-
-**Figure 6:** Songs Played Per day by Device Type
-
-```{r}
-
-ggplot(data, 
+```{r, fig.align='center'}
+ggplot(data,
        aes(x = device_type, y = songs_played_per_day, fill = device_type)) +
   geom_boxplot() +
-  
+
  # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -1.0,
-               color = "black", 
+               color = "black",
                size = 3.5) +
-  
+
   # Add the COUNT label
-  stat_summary(fun.data = fun_n_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_n_label,
+               geom = "text",
                vjust = 1.8,
                color = "black",
                size = 3.5) +
-  
+
   guides(fill = "none") +
   labs(
     title = "Songs Played Per day by Device Type",
@@ -413,6 +571,204 @@ ggplot(data,
   theme_minimal()
 ```
 
-The number of songs played per day is almost the same across all device types Desktop (51 songs), Mobile (50), and Web (49). This shows that device type does not meaningfully influence how many songs users listen to each day. However, the wide range within each device group indicates that users differ greatly in their listening habits: some play only a few songs while others play close to 100. This pattern is consistent with the earlier plots (skip rate and listening time), where the medians across groups were nearly identical but the spread was large. Together, these results suggest that listening behavior is highly individualized, not determined by whether the user is Free, Premium, Desktop, Mobile, 
+::: {style="text-align: center;"}
+***Figure 6:** Songs Played Per day by Device Type*
+:::
+
+The number of songs played per day is almost the same across all device types Desktop (51 songs), Mobile (50), and Web (49). This shows that device type does not meaningfully influence how many songs users listen to each day. However, the wide range within each device group indicates that users differ greatly in their listening habits: some play only a few songs while others play close to 100. This pattern is consistent with the earlier plots (skip rate and listening time), where the medians across groups were nearly identical but the spread was large. Together, these results suggest that listening behavior is highly individualized, not determined by whether the user is Free, Premium, Desktop, Mobile,
 
 For churn analysis, this means Spotify should focus on individual behavioral signals such as very low listening time, very few songs played, or high skip rates rather than device type or subscription category, because extreme user behavior predicts churn more accurately than group labels.
+
+```{r}
+ggplot(data, aes(x = device_type, y = skip_rate)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.5) +
+
+  # Add the MEDIAN label
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
+               vjust = -1.0,
+               color = "black",
+               size = 3.5) +
+
+  labs(title = "Device Type vs. Skip Rate")
+```
+
+::: {style="text-align: center;"}
+***Figure 7:** Device Type by Skip Rate*
+:::
+
+To provide additional evidence of this consistency. The median skip rates for desktop, mobile, and web users are all close to 0.30, with mobile users showing a slightly lower median of approximately 0.29, while desktop and web users exhibit marginally higher medians around 0.30 to 0.31. These differences are minimal and are outweighed by the wide dispersion observed within each device category. The large overlap in the interquartile ranges suggests that device type does not systematically affect skipping behavior. Instead, skip rate appears to be driven by user specific preferences and satisfaction with music recommendations rather than the listening environment itself.
+
+Overall, the descriptive analysis suggests that engagement metrics are relatively uniform across demographic and contextual dimensions, while extreme behaviors such as very high skip rates or very low listening time vary at the individual level. This supports the modeling strategy adopted in the subsequent regression analysis, which emphasizes behavioral variables as key predictors of churn rather than relying on demographic or device based segmentation.
+
+```{r}
+# Prepare the comparison data
+compare_subscription_device_type <- data |>
+  count(subscription_type, device_type) |>
+  mutate(
+    percentage = n / sum(n),
+    # Create label: Count (Overall %)"
+    label_text = paste0(n, "\n(", percent(percentage, accuracy = 0.1), ")")
+  )
+
+# Create the Heatmap
+ggplot(compare_subscription_device_type, aes(x = subscription_type, y = device_type, fill = n)) +
+  geom_tile(color = "white", linewidth = 0.5) +
+
+  # Add the labels
+  geom_text(aes(label = label_text), color = "black", size = 4) +
+
+  # Color scale
+  scale_fill_gradient(low = "#f7fbff", high = "#084594", name = "User Count") +
+
+  labs(
+    title = "Comparison: Subscription Type vs. Device Type",
+    subtitle = "Percentages represent the share of the ENTIRE user base",
+    x = "Subscription Type",
+    y = "Device Type"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+```
+
+::: {style="text-align: center;"}
+***Figure 8:** Comparison: Subscription Type and Device Type*
+:::
+
+Figure 8 compares subscription type and device type by showing the number and percentage of users in each combination, with percentages calculated relative to the entire user base. Overall, the heatmap reveals a highly balanced distribution of users across devices and subscription plans, with no dominant pairing emerging.
+
+Across all subscription types (Family, Free, Premium, and Student), user counts are relatively evenly split between Web, Mobile, and Desktop. Premium users represent the largest group overall and are most commonly associated with Desktop usage (745 users, 9.3 percent of the total user base), followed closely by Web and Mobile usage. However, this pattern reflects the overall popularity of the Premium plan rather than a strong preference for a specific device.
+
+Similarly, Free, Family, and Student users display very similar distributions across device types. For example, Free users are almost evenly distributed across Web (8.6 percent), Mobile (8.4 percent), and Desktop (8.3 percent), indicating no meaningful device concentration. Student and Family users show the same pattern, with differences across devices remaining small and marginal. From a behavioral perspective, this visualization suggests that subscription choice and device choice are largely independent. Users do not appear to select a subscription plan based on the device they use, nor does device type meaningfully segment users into different subscription categories. This aligns with earlier regression and descriptive findings showing that device type does not significantly influence engagement metrics such as skip rate, listening time, or songs played per day.
+
+### Logistic Regression Findings
+
+The baseline logistic regression tested whether behavioral factors such as skip rate, songs played per day, listening time, and subscription type predicted churn. None of these variables were statistically significant, suggesting that churn is not systematically related to engagement levels. A subsequent model incorporating demographic and geographic controls (age, gender, country) also failed to identify significant predictors, reinforcing that user churn in this dataset appears random (stochastic) rather than behaviorally or demographically driven.
+
+#### Logistic Regression to predict churn (Choose the predictive target: Churn)
+
+Goal: Test if user behavior (listening habits) can predict who will leave.
+
+-   **skip_rate**
+
+-   **songs_played_per_day**
+
+-   **listening_time**
+
+-   **subscription_type** (Converted to Binary: 1 = Paid, 0 = Free)
+
+```{r}
+# Create a binary target and subscription variable
+analysis_data <- data |>
+  mutate(
+    # Create the binary variable: If type is "Free" -> 0, otherwise -> 1
+    subscription_binary = ifelse(subscription_type == "Free", 0, 1),
+
+    # Ensure the target variable is a factor
+    is_churned = as.factor(is_churned)
+  )
+
+# Check the split between Free (0) and Paid (1)
+table(analysis_data$subscription_binary)
+```
+
+```{r}
+churn_model <- glm(is_churned ~ skip_rate + songs_played_per_day + listening_time + subscription_binary,
+                   data = analysis_data,
+                   family = "binomial")
+
+summary(churn_model)
+```
+
+Interpretation of Results:
+
+-   **Significance:** None of the behavioral variables (skip_rate, listening_time, songs_played) had a P-value less than 0.05.
+
+-   **Coefficients:**
+
+    -   **skip_rate had a slight positive trend (higher skips = higher churn), but it was not statistically significant.**
+
+    -   **listening_time had almost zero impact on the probability of churning.**
+
+-   **Conclusion for Model 1:** Churn in this dataset is not driven by user engagement behavior. Users who listen a lot are just as likely to churn as those who listen a little.
+
+#### Predicting Churn with Demographics & Geography
+
+Since behavior failed to predict churn, we hypothesized that who the user is (Age, Gender) or where they live (Country) might be the real driver, perhaps due to pricing or local competition.
+
+```{r}
+# Ensure categorical variables are factors
+analysis_data$gender <- as.factor(analysis_data$gender)
+analysis_data$country <- as.factor(analysis_data$country)
+
+# Run the model including Age, Gender, and Country
+churn_model_country <- glm(is_churned ~ age + gender + country + subscription_binary,
+                           data = analysis_data,
+                           family = "binomial")
+
+summary(churn_model_country)
+```
+
+-   **Age:** The P-value was high (0.744), indicating no difference in churn risk between younger and older users.
+
+-   **Gender:** There was no statistically significant difference between Male, Female, or Other genders.
+
+-   **Country:** No specific country showed a significantly higher or lower churn risk compared to the baseline.
+
+-   **Result:** Demographics also failed to predict churn effectively.
+
+### Baseline Logistic Regression and Extended Model Results
+
+The analysis begins with a baseline logistic regression model designed to estimate the relationship between user engagement variables and the probability of churn.
+
+**Model 1**, which includes only behavioral variables skip_rate, songs_played_per_day, listening_time, and subscription_binary (1 = Paid, 0 = Free) shows no statistically significant predictors of churn. The estimated coefficients suggest minor directional trends (higher skip rates associated with slightly higher churn likelihood), but none reach statistical significance (p \> 0.10).
+
+**Model 2**, additional demographic and geographic covariates (age, gender, and country) are introduced to control for user heterogeneity. The inclusion of these factors slightly improves model fit (AIC decreases from 9155.6 to 9165.7) but the coefficients remain statistically insignificant. This indicates that demographic and regional differences do not meaningfully explain churn behavior among Spotify users.
+
+The absence of statistically significant predictors across both models suggests that Spotify user churn in this dataset behaves stochastically, meaning it cannot be systematically explained by observed behavioral or demographic variables. The small coefficient magnitudes and high p-values imply that listening patterns (such as skip frequency or total playtime) and user characteristics (such as age or gender) have minimal predictive power for churn.
+
+These results parallel what would occur in a Difference-in-Differences framework when treatment effects disappear after controlling for unobserved heterogeneity: once user-specific factors and general trends are accounted for, the apparent associations between engagement and churn lose significance. Consequently, the findings emphasize the need for richer data sources such as satisfaction surveys, app performance metrics, or pricing sensitivity to better capture the true drivers of user disengagement.
+
+## Discussion & Conclusion
+
+This study examined whether user engagement behavior, demographics, and usage context can explain churn behavior on Spotify using the Spotify Analysis Dataset 2025. Across descriptive analysis, logistic regression, moderation models, and matching approaches, a consistent pattern emerged: user churn in this dataset is not systematically explained by observable engagement metrics, demographic characteristics, or device usage.
+
+Descriptive visualizations showed remarkably stable engagement patterns across age groups, genders, subscription types, and device categories. Median listening time, skip rate, and songs played per day varied only slightly across groups, while substantial variation existed within each group. This indicates that engagement behavior is highly individualized rather than segmented by observable user attributes. Figures comparing skip rate by subscription type and device type further reinforced this conclusion, showing nearly identical medians and overlapping distributions across categories
+
+Regression results aligned closely with these descriptive insights. Neither baseline nor extended logistic regression models identified statistically significant predictors of churn. Behavioral variables such as skip rate, listening time, and songs played per day showed weak directional trends but lacked statistical significance. Adding demographic and geographic controls did not materially improve explanatory power, suggesting that churn behavior in this dataset behaves stochastically rather than being driven by systematic differences in engagement or user characteristics.
+
+Moderation analysis also failed to uncover heterogeneous effects. Interaction terms between engagement variables and subscription type or device type were not significant, indicating that the relationship between engagement and churn does not differ meaningfully across paid versus free users or across listening environments. This finding is consistent with the heatmap analysis of subscription type and device type, which showed a balanced distribution across all combinations, suggesting independence between these dimensions.
+
+While null results may appear counterintuitive, they offer important insights. First, the findings suggest that traditional engagement metrics alone are insufficient to explain churn behavior in this dataset. Users who listen frequently and users who listen infrequently are equally likely to churn, indicating that disengagement is not simply a function of time spent or skipping behavior. Second, the absence of significant demographic effects implies that churn is not concentrated among specific age groups, genders, or countries. This suggests that Spotify’s global user experience may be relatively standardized, or that unobserved factors dominate the decision to leave the platform. Third, the results highlight the limitations of cross-sectional behavioral data for churn prediction. Churn is often influenced by factors such as perceived value, satisfaction with recommendations, app performance issues, pricing sensitivity, or external competition. These dimensions are not captured in the current dataset, which focuses primarily on usage quantity rather than user experience quality.
+
+### Implications for Spotify
+
+From a managerial perspective, these findings suggest that simple segmentation strategies based on device type, subscription tier, or basic engagement metrics may be ineffective for churn prevention. Instead, Spotify may benefit more from focusing on individual-level behavioral extremes, such as sudden drops in listening activity, sharp increases in skip rate over time, or changes in ad exposure tolerance.
+
+Moreover, the results imply that churn prediction models should incorporate richer data sources, including:
+
+-   User satisfaction or feedback signals
+
+-   Playlist interaction quality (likes, saves, follows)
+
+-   Recommendation relevance metrics
+
+-   App performance or latency indicators
+
+-   Pricing changes or promotional exposure
+
+These factors may better capture the psychological and experiential drivers behind user disengagement.
+
+### Limitations and Areas for Improvement
+
+-   Several limitations of this study should be acknowledged. First, the analysis relies on a single cross-sectional snapshot of user behavior, which limits the ability to capture dynamic changes leading up to churn. Future work could incorporate panel data or time-series features to detect behavioral trends prior to churn events. Second, churn is treated as a binary outcome without distinguishing between voluntary churn, temporary inactivity, or platform switching. More granular churn definitions could improve interpretability. Third, although matching techniques were applied to improve comparability between user groups, unobserved heterogeneity may still bias results. Incorporating causal inference methods with richer covariates or experimental data would strengthen causal interpretation.
+
+### Conclusion
+
+In conclusion, this study finds that Spotify user churn in the Spotify Analysis Dataset 2025 cannot be reliably predicted using observable engagement behavior, demographics, or device usage alone. Engagement patterns are highly consistent across user groups, and churn appears to be driven by unobserved or qualitative factors rather than measurable listening intensity. While these results highlight the limits of behavioral analytics in isolation, they also provide valuable direction for future research and platform strategy. By expanding data collection to include experiential and sentiment-based signals, Spotify can develop more effective and nuanced approaches to understanding and preventing user churn.
+
+## Reference
+
+-   Nabihazahid. (2025). Spotify Dataset for Churn Analysis \[Data set\]. Kaggle. Retrieved December 22, 2025, from <https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis>
+
+-   GeeksforGeeks. (n.d.). Exploratory Data Analysis in R Programming. GeeksforGeeks. Retrieved December 22, 2025, from [https://www.geeksforgeeks.org/r-language/exploratory-data-analysis-in-r-programming](https://www.geeksforgeeks.org/r-language/exploratory-data-analysis-in-r-programming/){.uri}
