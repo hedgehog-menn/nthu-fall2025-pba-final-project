@@ -63,7 +63,7 @@ behavior is essential for sustaining engagement and driving growth. Our
 project leverages the Spotify Analysis Dataset 2025, which contains
 detailed user-level data, including listening time, skip rates, plan
 types (Free or Premium), ad exposure, device usage, demographic
-information, and a churn flag. 
+information, and a churn flag.
 
 By examining these variables, we aim to uncover key engagement patterns
 that explain who remains active, who is at risk of churning, and who
@@ -201,10 +201,10 @@ characteristics that may influence engagement and retention:
 
 To explore **heterogeneous effects**, two moderators are included:
 
-- **plan_type**: 1 if Premium, 0 if Free  to test whether behavioral
+- **plan_type**: 1 if Premium, 0 if Free to test whether behavioral
   drivers differ between paid and free users.
 
-- **device_category**: 1 if mobile, 0 if non-mobile  to assess how
+- **device_category**: 1 if mobile, 0 if non-mobile to assess how
   listening context influences churn and engagement.
 
 ## Data
@@ -340,7 +340,7 @@ user-specific characteristics and regional market effects that could
 influence engagement or retention.
 
 $$
-(P(Churn_i = 1​) = \alpha + \beta X_i ​+ \gamma D_i​ + \epsilon_i​
+(P(Churn_i = 1​) = \alpha + \beta X_i ​+ \gamma D_i​ + \epsilon_i
 $$
 
 where $X_i$ represents behavioral variables and $D_i$ denotes
@@ -373,10 +373,10 @@ per day vary by subscription status or listening environment. The
 extended model is expressed as:
 
 $$
-logit(Churn_i​) = \alpha + \beta_1 X_i ​+ \beta_2 X_i ​+ \beta_3​ (X_i\times M_i) + \gamma Z_i ​+ \epsilon_i​
+logit(Churn_i​) = \alpha + \beta_1 X_i ​+ \beta_2 X_i ​+ \beta_3​ (X_i\times M_i) + \gamma Z_i ​+ \epsilon_i
 $$
 
-- $X_i$  represents user engagement variables (skip_rate,
+- $X_i$ represents user engagement variables (skip_rate,
   listening_time),
 
 - $M_i$ is the moderator (plan_type or device_type)
@@ -424,7 +424,7 @@ that users, regardless of demographic background, spend a comparable
 amount of time on the platform. Similarly, skip rates clustered around
 30 percent across all subscription types, suggesting that the tendency
 to skip songs is not strongly influenced by whether users are on Free,
-Premium, Family, or Student plans. 
+Premium, Family, or Student plans.
 
 Insights from the data visualizations further reinforce the conclusion
 that engagement behavior is largely stable across usage contexts.
@@ -546,7 +546,7 @@ library(modelr)
 
     ``` r
     fun_median_label <- function(y) {
-      return(data.frame(y = median(y), 
+      return(data.frame(y = median(y),
                         label = round(median(y), 2)))
     }
     ```
@@ -555,7 +555,7 @@ library(modelr)
 
     ``` r
     fun_n_label <- function(y) {
-      return(data.frame(y = median(y), 
+      return(data.frame(y = median(y),
                         label = paste0("n = ", length(y))))
     }
     ```
@@ -563,7 +563,7 @@ library(modelr)
 ------------------------------------------------------------------------
 
 ``` r
-# In the upcoming visualization, it requires to use a ISO country code 
+# In the upcoming visualization, it requires to use a ISO country code
 # which make us to need to change the country code UK to GB for the United Kingdom
 
 data <- data %>%
@@ -575,7 +575,7 @@ data <- data %>%
 country_counts <- data %>%
   count(country, name = "user_count")
 
-country_counts |> knitr::kable() 
+country_counts |> knitr::kable()
 ```
 
 | country | user_count |
@@ -657,8 +657,8 @@ plot_data <- country_sub_counts %>%
 # Create the stacked bar chart
 ggplot(
   plot_data,
-  aes(x = reorder(country, -total_users), 
-      y = user_count, 
+  aes(x = reorder(country, -total_users),
+      y = user_count,
       fill = subscription_type)
   ) +
 
@@ -667,17 +667,17 @@ ggplot(
 
   # Layer 2: The internal labels (count + percentage)
   geom_text(
-    aes(label = label_text), 
+    aes(label = label_text),
     position = position_stack(vjust = 0.5),
-    color = "black", 
+    color = "black",
     size = 3
   ) +
-  
+
   # Layer 3: The total count label on top of each bar
   geom_text(
     data = country_totals,
     aes(x = reorder(country, -total_users),
-        y = total_users, 
+        y = total_users,
         label = total_users),
     inherit.aes = FALSE,
     vjust = -0.5,
@@ -717,7 +717,7 @@ Premium, Free, Family, and Student plans.
 # Set Up the related variable - Create the age groups
 data_with_age_groups <- data %>%
   mutate(
-    age_group = cut(age, 
+    age_group = cut(age,
                     # We define the "breaks" for each group
                     breaks = c(0, 19, 29, 39, 49, 59, Inf),
                     # And give those groups names
@@ -728,25 +728,25 @@ data_with_age_groups <- data %>%
 
 ``` r
 # Create the box plot
-ggplot(data_with_age_groups, 
+ggplot(data_with_age_groups,
        aes(x = age_group, y = listening_time, fill = age_group)) +
 
   geom_boxplot() +
 
   # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -1.0,
-               color = "black", 
+               color = "black",
                size = 3.5) +
-  
+
   # Add the COUNT label
-  stat_summary(fun.data = fun_n_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_n_label,
+               geom = "text",
                vjust = 1.8,
                color = "black",
                size = 3.5) +
-  
+
   guides(fill = "none") +
   labs(
     title = "Listening Time Across Age Groups",
@@ -778,24 +778,24 @@ suggesting similar engagement levels across different demographic
 groups.
 
 ``` r
-ggplot(data, 
+ggplot(data,
        aes(x = subscription_type, y = skip_rate, fill = subscription_type)) +
   geom_boxplot() +
-  
+
   # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -0.7,
-               color = "black", 
+               color = "black",
                size = 4) +
-  
+
   # Add the COUNT label
-  stat_summary(fun.data = fun_n_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_n_label,
+               geom = "text",
                vjust = 1.8,
                color = "black",
                size = 4) +
-  
+
   guides(fill = "none") +
   labs(
     title = "Skip Rate Distribution by Subscription Type",
@@ -817,7 +817,7 @@ data-fig-align="center" />
 The skip rate is almost identical across all subscription types, with
 each group showing a median of around 0.3 or 30% This indicates that
 subscription type does not influence how often users skip songs. All
-groups Family, Free, Premium, and Student  display nearly the same
+groups Family, Free, Premium, and Student display nearly the same
 central behavior when it comes to skipping tracks. However, the boxplot
 shows a wide spread in each subscription group. This means that while
 the average skipping behavior is the same, individual differences are
@@ -837,24 +837,24 @@ skip rate of 45 percent may still be at high churn risk if they
 consistently feel the recommendations do not match their preferences.
 
 ``` r
-ggplot(data, 
+ggplot(data,
        aes(x = device_type, y = listening_time, fill = device_type)) +
   geom_boxplot() +
-  
+
   # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -1.0,
-               color = "black", 
+               color = "black",
                size = 4) +
-  
+
   # Add the COUNT label
-  stat_summary(fun.data = fun_n_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_n_label,
+               geom = "text",
                vjust = 1.8,
                color = "black",
                size = 4) +
-  
+
   guides(fill = "none") +
   labs(
     title = "Listening Time by Device Type",
@@ -902,7 +902,7 @@ Some users skip frequently, others almost never regardless of
 subscription type.  
 In other words, these behaviors depend more on individual preferences
 than on product tier. Being a Premium or Free user does not predict skip
-rate, and using Mobile or Desktop does not predict listening time. 
+rate, and using Mobile or Desktop does not predict listening time.
 
 However, certain behavioral patterns remain important for understanding
 churn:
@@ -918,24 +918,24 @@ variation, individual listening patterns are still crucial predictors
 for churn.
 
 ``` r
-ggplot(data, 
+ggplot(data,
        aes(x = device_type, y = songs_played_per_day, fill = device_type)) +
   geom_boxplot() +
-  
+
  # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -1.0,
-               color = "black", 
+               color = "black",
                size = 3.5) +
-  
+
   # Add the COUNT label
-  stat_summary(fun.data = fun_n_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_n_label,
+               geom = "text",
                vjust = 1.8,
                color = "black",
                size = 3.5) +
-  
+
   guides(fill = "none") +
   labs(
     title = "Songs Played Per day by Device Type",
@@ -963,7 +963,7 @@ few songs while others play close to 100. This pattern is consistent
 with the earlier plots (skip rate and listening time), where the medians
 across groups were nearly identical but the spread was large. Together,
 these results suggest that listening behavior is highly individualized,
-not determined by whether the user is Free, Premium, Desktop, Mobile, 
+not determined by whether the user is Free, Premium, Desktop, Mobile,
 
 For churn analysis, this means Spotify should focus on individual
 behavioral signals such as very low listening time, very few songs
@@ -976,12 +976,12 @@ ggplot(data, aes(x = device_type, y = skip_rate)) +
   geom_boxplot(fill = "steelblue", alpha = 0.5) +
 
   # Add the MEDIAN label
-  stat_summary(fun.data = fun_median_label, 
-               geom = "text", 
+  stat_summary(fun.data = fun_median_label,
+               geom = "text",
                vjust = -1.0,
-               color = "black", 
+               color = "black",
                size = 3.5) +
-  
+
   labs(title = "Device Type vs. Skip Rate")
 ```
 
@@ -1025,13 +1025,13 @@ compare_subscription_device_type <- data |>
 # 2. Create the Heatmap
 ggplot(compare_subscription_device_type, aes(x = subscription_type, y = device_type, fill = n)) +
   geom_tile(color = "white", linewidth = 0.5) +
-  
+
   # Add the labels
   geom_text(aes(label = label_text), color = "black", size = 4) +
-  
+
   # Color scale
   scale_fill_gradient(low = "#f7fbff", high = "#084594", name = "User Count") +
-  
+
   labs(
     title = "Comparison: Subscription Type vs. Device Type",
     subtitle = "Percentages represent the share of the ENTIRE user base",
@@ -1062,7 +1062,7 @@ Premium users represent the largest group overall and are most commonly
 associated with Desktop usage (745 users, 9.3 percent of the total user
 base), followed closely by Web and Mobile usage. However, this pattern
 reflects the overall popularity of the Premium plan rather than a strong
-preference for a specific device. 
+preference for a specific device.
 
 Similarly, Free, Family, and Student users display very similar
 distributions across device types. For example, Free users are almost
@@ -1109,7 +1109,7 @@ analysis_data <- data %>%
   mutate(
     # Create the binary variable: If type is "Free" -> 0, otherwise -> 1
     subscription_binary = ifelse(subscription_type == "Free", 0, 1),
-    
+
     # Ensure the target variable is a factor
     is_churned = as.factor(is_churned)
   )
@@ -1123,8 +1123,8 @@ table(analysis_data$subscription_binary)
     2018 5982 
 
 ``` r
-churn_model <- glm(is_churned ~ skip_rate + songs_played_per_day + listening_time + subscription_binary, 
-                   data = analysis_data, 
+churn_model <- glm(is_churned ~ skip_rate + songs_played_per_day + listening_time + subscription_binary,
+                   data = analysis_data,
                    family = "binomial")
 
 summary(churn_model)
@@ -1183,8 +1183,8 @@ analysis_data$gender <- as.factor(analysis_data$gender)
 analysis_data$country <- as.factor(analysis_data$country)
 
 # Run the model including Age, Gender, and Country
-churn_model_country <- glm(is_churned ~ age + gender + country + subscription_binary, 
-                           data = analysis_data, 
+churn_model_country <- glm(is_churned ~ age + gender + country + subscription_binary,
+                           data = analysis_data,
                            family = "binomial")
 
 summary(churn_model_country)
@@ -1235,7 +1235,7 @@ summary(churn_model_country)
 
 The analysis begins with a baseline logistic regression model designed
 to estimate the relationship between user engagement variables and the
-probability of churn. 
+probability of churn.
 
 **Model 1**, which includes only behavioral variables skip_rate,
 songs_played_per_day, listening_time, and subscription_binary (1 = Paid,
@@ -1266,7 +1266,7 @@ unobserved heterogeneity: once user-specific factors and general trends
 are accounted for, the apparent associations between engagement and
 churn lose significance. Consequently, the findings emphasize the need
 for richer data sources such as satisfaction surveys, app performance
-metrics, or pricing sensitivity  to better capture the true drivers of
+metrics, or pricing sensitivity to better capture the true drivers of
 user disengagement.
 
 ## Discussion & Conclusion
@@ -1297,7 +1297,7 @@ directional trends but lacked statistical significance. Adding
 demographic and geographic controls did not materially improve
 explanatory power, suggesting that churn behavior in this dataset
 behaves stochastically rather than being driven by systematic
-differences in engagement or user characteristics. 
+differences in engagement or user characteristics.
 
 Moderation analysis also failed to uncover heterogeneous effects.
 Interaction terms between engagement variables and subscription type or
@@ -1382,9 +1382,9 @@ user churn.
 ## Reference
 
 - Nabihazahid. (2025). Spotify Dataset for Churn Analysis \[Data set\].
-  Kaggle. Retrieved December 22, 2025,
-  from<https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis>
+  Kaggle. Retrieved December 22, 2025, from
+  <https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis>
 
 - GeeksforGeeks. (n.d.). Exploratory Data Analysis in R Programming.
-  GeeksforGeeks. Retrieved December 22, 2025,
-  from<https://www.geeksforgeeks.org/r-language/exploratory-data-analysis-in-r-programming/>
+  GeeksforGeeks. Retrieved December 22, 2025, from
+  <https://www.geeksforgeeks.org/r-language/exploratory-data-analysis-in-r-programming/>
