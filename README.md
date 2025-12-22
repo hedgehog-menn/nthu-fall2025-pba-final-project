@@ -566,13 +566,13 @@ library(modelr)
 # In the upcoming visualization, it requires to use a ISO country code
 # which make us to need to change the country code UK to GB for the United Kingdom
 
-data <- data %>%
+data <- data |>
   mutate(country = case_when(
     country == "UK" ~ "GB",  # When country is "UK", change it to "GB"
     TRUE ~ country           # Otherwise (TRUE), keep the original code
   ))
 
-country_counts <- data %>%
+country_counts <- data |>
   count(country, name = "user_count")
 
 country_counts |> knitr::kable()
@@ -599,7 +599,7 @@ country_counts |> knitr::kable()
 world_map <- ne_countries(scale = "medium", returnclass = "sf")
 
 # Join our country code with the iso map data
-world_map_with_data <- world_map %>%
+world_map_with_data <- world_map |>
   left_join(country_counts, by = c("iso_a2_eh" = "country"))
 
 # Create the map visualization
@@ -634,19 +634,19 @@ US lead the group.Visualization No.2
 
 ``` r
 # Count users by country AND subscription type.
-country_sub_counts <- data %>%
+country_sub_counts <- data |>
   count(country, subscription_type, name = "user_count")
 ```
 
 ``` r
 # Calculate total users per country.
-country_totals <- country_sub_counts %>%
-  group_by(country) %>%
+country_totals <- country_sub_counts |>
+  group_by(country) |>
   summarise(total_users = sum(user_count))
 
 # Prepare data for the stacked segments.
-plot_data <- country_sub_counts %>%
-  left_join(country_totals, by = "country") %>%
+plot_data <- country_sub_counts |>
+  left_join(country_totals, by = "country") |>
   mutate(
     percentage = user_count / total_users,
     label_text = paste0(user_count, "\n(", percent(percentage, accuracy = 0.1), ")")
@@ -654,7 +654,6 @@ plot_data <- country_sub_counts %>%
 ```
 
 ``` r
-# Create the stacked bar chart
 ggplot(
   plot_data,
   aes(x = reorder(country, -total_users),
@@ -715,19 +714,16 @@ Premium, Free, Family, and Student plans.
 
 ``` r
 # Set Up the related variable - Create the age groups
-data_with_age_groups <- data %>%
+data_with_age_groups <- data |>
   mutate(
     age_group = cut(age,
-                    # We define the "breaks" for each group
                     breaks = c(0, 19, 29, 39, 49, 59, Inf),
-                    # And give those groups names
                     labels = c("Under 20", "20-29", "30-39", "40-49", "50-59", "60+"),
                     right = TRUE)
   )
 ```
 
 ``` r
-# Create the box plot
 ggplot(data_with_age_groups,
        aes(x = age_group, y = listening_time, fill = age_group)) +
 
@@ -1013,7 +1009,7 @@ behavioral variables as key predictors of churn rather than relying on
 demographic or device based segmentation.
 
 ``` r
-# 1. Prepare the comparison data
+# Prepare the comparison data
 compare_subscription_device_type <- data |>
   count(subscription_type, device_type) |>
   mutate(
@@ -1022,7 +1018,7 @@ compare_subscription_device_type <- data |>
     label_text = paste0(n, "\n(", percent(percentage, accuracy = 0.1), ")")
   )
 
-# 2. Create the Heatmap
+# Create the Heatmap
 ggplot(compare_subscription_device_type, aes(x = subscription_type, y = device_type, fill = n)) +
   geom_tile(color = "white", linewidth = 0.5) +
 
@@ -1105,7 +1101,7 @@ leave.
 
 ``` r
 # Create a binary target and subscription variable
-analysis_data <- data %>%
+analysis_data <- data |>
   mutate(
     # Create the binary variable: If type is "Free" -> 0, otherwise -> 1
     subscription_binary = ifelse(subscription_type == "Free", 0, 1),
@@ -1386,5 +1382,6 @@ user churn.
   <https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis>
 
 - GeeksforGeeks. (n.d.). Exploratory Data Analysis in R Programming.
-  GeeksforGeeks. Retrieved December 22, 2025, from
-  <https://www.geeksforgeeks.org/r-language/exploratory-data-analysis-in-r-programming/>
+  GeeksforGeeks. Retrieved December 22, 2025, from <a
+  href="https://www.geeksforgeeks.org/r-language/exploratory-data-analysis-in-r-programming/"
+  class="uri">https://www.geeksforgeeks.org/r-language/exploratory-data-analysis-in-r-programming</a>
